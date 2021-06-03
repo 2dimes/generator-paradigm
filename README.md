@@ -11,13 +11,13 @@ First, install [Yeoman](http://yeoman.io) and generator-gulp-starter-kit using [
 
 ```bash
 npm install -g yo
-npm install -g generator-gulp-starter-kit
+npm install -g generator-paradigm
 ```
 
 Then generate your new project:
 
 ```bash
-yo gulp-starter-kit
+yo paradigm
 ```
 
 ## Project Types
@@ -41,7 +41,7 @@ MIT © [Tyrel Witcher](tyrelwitcher.com)
 
 [npm-image]: https://badge.fury.io/js/generator-paradigm.svg
 [npm-url]: https://npmjs.org/package/generator-paradigm
-[travis-image]: https://travis-ci.com/twitcher07/generator-paradigm.svg?branch=master
+[travis-image]: https://travis-ci.com/2dimes/generator-paradigm.svg?branch=master
 [travis-url]: https://travis-ci.com/twitcher07/generator-paradigm
 [daviddm-image]: https://david-dm.org/twitcher07/generator-paradigm.svg?theme=shields.io
 [daviddm-url]: https://david-dm.org/twitcher07/generator-paradigm
