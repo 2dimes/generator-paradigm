@@ -1,5 +1,7 @@
-# generator-gulp-starter-kit
-> A simple Gulp workflow that uses sass, Webpack, babel.js, image minification, and browsersync. Project type options available for static html, [roots/bedrock](https://roots.io/bedrock/), or [Craft CMS](https://craftcms.com/docs/3.x/).
+# Paradigm Website Project Generator
+> A yeoman generator for web development projects at [Paradigm Marketing & Creative](https://2dimes.com) in Memphis, TN. 
+> ![Paradigm Marketing & Creative](https://rawgithub.com/2dimes/generator-paradigm/master/paradigm-logo.svg)
+> Includes a Gulp workflow that uses sass, Webpack, babel.js, image minification, and browsersync. Project type options available for static html, [roots/bedrock](https://roots.io/bedrock/), or [Craft CMS](https://craftcms.com/docs/3.x/).
 
 [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 
@@ -32,21 +34,14 @@ In order to use Bedrock or Craft CMS options, you must have the follow requireme
   - How to install PostgreSQL on Mac - [https://www.moncefbelyamani.com/how-to-install-postgresql-on-a-mac-with-homebrew-and-lunchy/]
 
 
-## Getting To Know Yeoman
-
- * Yeoman has a heart of gold.
- * Yeoman is a person with feelings and opinions, but is very easy to work with.
- * Yeoman can be too opinionated at times but is easily convinced not to be.
- * Feel free to [learn more about Yeoman](http://yeoman.io/).
-
 ## License
 
 MIT © [Tyrel Witcher](tyrelwitcher.com)
 
 
-[npm-image]: https://badge.fury.io/js/generator-gulp-starter-kit.svg
-[npm-url]: https://npmjs.org/package/generator-gulp-starter-kit
-[travis-image]: https://travis-ci.com/twitcher07/generator-gulp-starter-kit.svg?branch=master
-[travis-url]: https://travis-ci.com/twitcher07/generator-gulp-starter-kit
-[daviddm-image]: https://david-dm.org/twitcher07/generator-gulp-starter-kit.svg?theme=shields.io
-[daviddm-url]: https://david-dm.org/twitcher07/generator-gulp-starter-kit
+[npm-image]: https://badge.fury.io/js/generator-paradigm.svg
+[npm-url]: https://npmjs.org/package/generator-paradigm
+[travis-image]: https://travis-ci.com/twitcher07/generator-paradigm.svg?branch=master
+[travis-url]: https://travis-ci.com/twitcher07/generator-paradigm
+[daviddm-image]: https://david-dm.org/twitcher07/generator-paradigm.svg?theme=shields.io
+[daviddm-url]: https://david-dm.org/twitcher07/generator-paradigm
