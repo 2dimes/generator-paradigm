@@ -4,9 +4,9 @@
   "description": "A yeoman generator for web development projects at Paradigm Marketing & Creative in Memphis, TN. Includes a Gulp workflow that uses sass for css, Webpack, babel.js, image minification, and browsersync. Options available for static html, roots/bedrock app using composer, or install Craft CMS v3.",
   "homepage": "",
   "author": {
-    "name": "Tyrel Witcher",
-    "email": "tyrel.witcher@gmail.com",
-    "url": "https://tyrelwitcher.com"
+    "name": "Paradigm Marketing & Creative",
+    "email": "info@2dimes.com",
+    "url": "https://2dimes.com"
   },
   "files": [
     "generators"
