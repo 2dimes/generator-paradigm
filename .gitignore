@@ -1,3 +1,17 @@
+# System Files
+.DS_Store
+Thumbs.db
+
+# npm
 node_modules
+
+# Logs
+*.log
+*.log.*
+
+# temporary build files
+.tmp
+
+#other
 coverage
 secret.txt
