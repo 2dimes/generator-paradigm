@@ -46,18 +46,22 @@ module.exports = class extends Generator {
   prompting() {
     // Branding
     this.log(`
-      -----------------------------------------------------------------------------          
-                                                                                                          
-      Version  :   ${this.pkg.version}
-      Author   :   ${this.pkg.author.name}                                                   
-      Website  :   ${this.pkg.author.url}                                         
-      Github   :   ${this.pkg.repository.url}          
-                                                                                  
-      -----------------------------------------------------------------------------          
+        -----------------------------------------------
+        Version  :   ${this.pkg.version}
+        Author   :   ${this.pkg.author.name}
+        Website  :   ${this.pkg.author.url}
+        Github   :   ${this.pkg.repository.url}
+        -----------------------------------------------
     `);
+
     // Have Yeoman greet the user.
     this.log(
-      yosay(`Welcome to the finest ${chalk.red('gulp-starter-kit')} generator!`)
+      yosay(`${chalk.green('Paradigm Marketing & Creative')} project starter!`)
+    );
+
+    // Capitalizes the Site Name
+    const capitalSiteName = this.appname.replace(/\b\w/g, (l) =>
+      l.toUpperCase()
     );
 
     return this.prompt([
@@ -67,7 +71,7 @@ module.exports = class extends Generator {
         message: `What do you want to name this project? ${chalk.yellow(
           '(no special characters allowed)'
         )}`,
-        default: this.appname,
+        default: capitalSiteName,
         validate(input) {
           // Do async stuff
           if (/[~`!#$%^&*+=[\]\\';,/{}|\\":<>?]/g.test(input)) {
@@ -100,7 +104,7 @@ module.exports = class extends Generator {
             value: 'html',
           },
         ],
-        default: 'html',
+        default: 'craft',
         store: true,
       },
       {
@@ -113,7 +117,7 @@ module.exports = class extends Generator {
       {
         type: 'input',
         name: 'craftSiteName',
-        message: 'What do you want to call your Craft site?',
+        message: 'What do you want to call your Craft 3 site?',
         default: (answers) => answers.projectName,
         when: (answers) => answers.projectType.includes('craft'),
       },
@@ -122,7 +126,7 @@ module.exports = class extends Generator {
         name: 'siteUrl',
         message: 'What is the url for the site?',
         default() {
-          return `http://${path.basename(process.cwd())}.test`;
+          return `https://${path.basename(process.cwd())}.test`;
         },
         validate(input) {
           if (validURL(input)) {
@@ -174,12 +178,7 @@ module.exports = class extends Generator {
               '(https://github.com/verlok/vanilla-lazyload)'
             )}`,
             value: 'includeLazyload',
-            checked: false,
-          },
-          {
-            name: `Bootstrap - ${chalk.magenta('v4.4.0')}`,
-            value: 'includeBootstrap',
-            checked: false,
+            checked: true,
           },
           {
             name: `Alpine.js ${chalk.magenta(
@@ -190,10 +189,22 @@ module.exports = class extends Generator {
           },
           {
             name: `Tailwind CSS - ${chalk.magenta(
-              'v2.0.1 (https://github.com/tailwindlabs/tailwindcss/tree/v2.0.1)'
+              'v2.1.4 (https://github.com/tailwindlabs/tailwindcss/tree/v2.1.4)'
             )}`,
             value: 'includeTailwind',
             checked: true,
+          },
+          {
+            name: `Flickity - ${chalk.magenta(
+              'v2.2 (https://flickity.metafizzy.co)'
+            )}`,
+            value: 'includeFlickity',
+            checked: false,
+          },
+          {
+            name: `Bootstrap - ${chalk.magenta('v4.4.0')}`,
+            value: 'includeBootstrap',
+            checked: false,
           },
         ],
         store: true,
@@ -225,6 +236,7 @@ module.exports = class extends Generator {
       this.includeTailwind = hasFeature('includeTailwind');
       this.includeAlpine = hasFeature('includeAlpine');
       this.includeLazyload = hasFeature('includeLazyload');
+      this.includeFlickity = hasFeature('includeFlickity');
       this.includeJQuery = answers.includeJQuery;
       this.projectName = answers.projectName;
     });
@@ -256,6 +268,8 @@ module.exports = class extends Generator {
       includeTailwind: this.includeTailwind,
       includeAlpine: this.includeAlpine,
       includeLazyload: this.includeLazyload,
+      includeFlickity: this.includeFlickity,
+
       generateSalt: () => {
         const saltLength = 64;
 
@@ -328,9 +342,13 @@ module.exports = class extends Generator {
       pkgJson.dependencies['vanilla-lazyload'] = '^17.1.3';
     }
 
+    if (this.includeFlickity) {
+      pkgJson.dependencies.flickity = '^2.2.0';
+    }
+
     if (this.includeTailwind) {
       pkgJson.devDependencies['gulp-tailwindcss-export-config'] = '^1.0.1';
-      pkgJson.devDependencies.tailwindcss = '^2.0.1';
+      pkgJson.devDependencies.tailwindcss = '^2.1.4';
 
       copy('tailwind.config.js', 'tailwind.config.js');
     }
@@ -358,11 +376,11 @@ module.exports = class extends Generator {
     if (this.projectType === 'html') {
       this.log(
         yosay(
-          `Thanks for using Gulp Starter Kit!\nTry running 'npm run serve' to check out your new fancy project!\nCheers 🍻!`
+          `Thanks for using the Paradigm Starter Kit!\nTry running 'npm run serve' to check out your new fancy project!\nCheers 🍻!`
         )
       );
     } else {
-      this.log(yosay(`Thanks for using Gulp Starter Kit!\nCheers 🍻!`));
+      this.log(yosay(`Thanks for using the Paradigm Starter Kit!\nCheers 🍻!`));
     }
 
     if (this.projectType === 'craft') {
