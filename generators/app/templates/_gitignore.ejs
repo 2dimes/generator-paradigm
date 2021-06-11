@@ -55,6 +55,9 @@ faviconData.json
 <%_ } -%>
 <%_ if (projectType === 'bedrock') { -%>
 web/app/theme/<%= wordpressTemplateName %>/static
+
+# Make sure ACF pro plugin is tracked by git
+!web/app/plugins/advanced-custom-fields-pro
 <%_ } else if (projectType === 'craft') { -%>
 web/assets
 <%_ } -%>
