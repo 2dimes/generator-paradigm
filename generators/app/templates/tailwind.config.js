@@ -127,5 +127,9 @@ module.exports = {
     },
     plugins: [
     ],
-    purge: pkg.paths.purgeFiles
+    purge: {
+        enabled: (process.env.NODE_ENV === 'production'),
+        content: pkg.paths.purgeFiles,
+        safelist: []
+    }
 }

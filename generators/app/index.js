@@ -189,7 +189,7 @@ module.exports = class extends Generator {
           },
           {
             name: `Tailwind CSS - ${chalk.magenta(
-              'v2.1.4 (https://github.com/tailwindlabs/tailwindcss/tree/v2.1.4)'
+              'v2.2.6 (https://github.com/tailwindlabs/tailwindcss/tree/v2.2.6)'
             )}`,
             value: 'includeTailwind',
             checked: true,
@@ -348,7 +348,7 @@ module.exports = class extends Generator {
 
     if (this.includeTailwind) {
       pkgJson.devDependencies['gulp-tailwindcss-export-config'] = '^1.0.1';
-      pkgJson.devDependencies.tailwindcss = '^2.1.4';
+      pkgJson.devDependencies.tailwindcss = '^2.2.6';
 
       copy('tailwind.config.js', 'tailwind.config.js');
     }
