@@ -3,7 +3,7 @@
 > ![Paradigm Marketing & Creative](https://rawgithub.com/2dimes/generator-paradigm/master/paradigm-logo.svg)
 > Includes a Gulp workflow that uses sass, Webpack, babel.js, image minification, and browsersync. Project type options available for static html, [roots/bedrock](https://roots.io/bedrock/), or [Craft CMS](https://craftcms.com/docs/3.x/).
 
-[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
+[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]
 
 ## Installation
 
@@ -36,7 +36,7 @@ In order to use Bedrock or Craft CMS options, you must have the follow requireme
 
 ## License
 
-MIT © [Tyrel Witcher](tyrelwitcher.com)
+MIT © [Paradigm Marketing & Creative](https://2dimes.com)
 
 
 [npm-image]: https://badge.fury.io/js/generator-paradigm.svg
