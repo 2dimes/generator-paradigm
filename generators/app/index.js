@@ -202,6 +202,13 @@ module.exports = class extends Generator {
             checked: false,
           },
           {
+            name: `Fancybox ${chalk.magenta(
+              'v4 (https://github.com/fancyapps/ui)'
+            )}`,
+            value: 'includeFancybox',
+            checked: false,
+          },
+          {
             name: `Bootstrap - ${chalk.magenta('v4.4.0')}`,
             value: 'includeBootstrap',
             checked: false,
@@ -237,6 +244,7 @@ module.exports = class extends Generator {
       this.includeAlpine = hasFeature('includeAlpine');
       this.includeLazyload = hasFeature('includeLazyload');
       this.includeFlickity = hasFeature('includeFlickity');
+      this.includeFancybox = hasFeature('includeFancybox');
       this.includeJQuery = answers.includeJQuery;
       this.projectName = answers.projectName;
     });
@@ -269,6 +277,7 @@ module.exports = class extends Generator {
       includeAlpine: this.includeAlpine,
       includeLazyload: this.includeLazyload,
       includeFlickity: this.includeFlickity,
+      includeFancybox: this.includeFancybox,
 
       generateSalt: () => {
         const saltLength = 64;
@@ -344,6 +353,10 @@ module.exports = class extends Generator {
 
     if (this.includeFlickity) {
       pkgJson.dependencies.flickity = '^2.2.0';
+    }
+
+    if (this.includeFancybox) {
+      pkgJson.dependencies['@fancyapps/ui'] = '^4.0.0-beta.0';
     }
 
     if (this.includeTailwind) {

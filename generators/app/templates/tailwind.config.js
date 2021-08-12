@@ -1,4 +1,5 @@
 const pkg = require('./package.json');
+const colors = require('tailwindcss/colors');
 const plugin = require('tailwindcss/plugin');
 
 module.exports = {
@@ -68,6 +69,13 @@ module.exports = {
         fontFamily: {
             'body': ['Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
             'heading': ['Georgia', 'Times', 'Times New Roman', 'serif'],
+        },
+
+        colors: {
+            primary: colors.indigo,
+            secondary: colors.amber,
+            gray: colors.coolGray,
+            black: '#333333',
         },
 
         fontSize: {
