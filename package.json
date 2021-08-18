@@ -42,6 +42,7 @@
     "chalk": "^2.1.0",
     "lodash": "^4.17.19",
     "mkdirp": "^1.0.4",
+    "sort-package-json": "^1.50.0",
     "yeoman-generator": "^2.0.1",
     "yosay": "^2.0.1"
   },

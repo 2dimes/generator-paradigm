@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const chalk = require('chalk');
 const yosay = require('yosay');
 const mkdirp = require('mkdirp');
+const sortPackageJson = require('sort-package-json');
 const config = require('./config');
 
 function validURL(str) {
@@ -384,7 +385,15 @@ module.exports = class extends Generator {
       copy('tailwind.config.js', 'tailwind.config.js');
     }
 
-    this.fs.extendJSON(this.destinationPath('package.json'), pkgJson);
+    let newPkgJson = _.merge(
+      this.fs.readJSON(this.destinationPath('package.json')),
+      pkgJson
+    );
+
+    // Sort package.json since it was programmatically created
+    newPkgJson = sortPackageJson(newPkgJson);
+
+    this.fs.writeJSON(this.destinationPath('package.json'), newPkgJson);
   }
 
   install() {
