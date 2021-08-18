@@ -202,10 +202,17 @@ module.exports = class extends Generator {
             checked: false,
           },
           {
-            name: `Fancybox ${chalk.magenta(
-              'v4 (https://github.com/fancyapps/ui)'
+            name: `Fancybox - ${chalk.magenta(
+              'v4.0.0-beta.0 (https://github.com/fancyapps/ui)'
             )}`,
             value: 'includeFancybox',
+            checked: false,
+          },
+          {
+            name: `Greensock Animation Platform GSAP - ${chalk.magenta(
+              'v3.7 (https://github.com/greensock/GSAP)'
+            )}`,
+            value: 'includeGSAP',
             checked: false,
           },
           {
@@ -245,6 +252,7 @@ module.exports = class extends Generator {
       this.includeLazyload = hasFeature('includeLazyload');
       this.includeFlickity = hasFeature('includeFlickity');
       this.includeFancybox = hasFeature('includeFancybox');
+      this.includeGSAP = hasFeature('includeGSAP');
       this.includeJQuery = answers.includeJQuery;
       this.projectName = answers.projectName;
     });
@@ -278,6 +286,7 @@ module.exports = class extends Generator {
       includeLazyload: this.includeLazyload,
       includeFlickity: this.includeFlickity,
       includeFancybox: this.includeFancybox,
+      includeGSAP: this.includeGSAP,
 
       generateSalt: () => {
         const saltLength = 64;
@@ -357,6 +366,15 @@ module.exports = class extends Generator {
 
     if (this.includeFancybox) {
       pkgJson.dependencies['@fancyapps/ui'] = '^4.0.0-beta.0';
+
+      // Copy over sass files
+      config.fancybox4.filesToCopy.forEach((file) => {
+        copy(file.input, file.output);
+      });
+    }
+
+    if (this.includeGSAP) {
+      pkgJson.dependencies.gsap = '^3.7.1';
     }
 
     if (this.includeTailwind) {
