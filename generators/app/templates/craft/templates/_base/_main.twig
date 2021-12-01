@@ -53,7 +53,7 @@
 
     </head>
 
-    <body class="{% bodyClass | default() %}">
+    <body class="{{ bodyClass | default() }}">
 
         <a class="sr-only focus:not-sr-only" href="#main-content">{{ "Skip to main content"|t }}</a>
 
