@@ -60,8 +60,9 @@
 
 ---
 
-## Customizing output path
-Change `"paths": { "distFolder": "dist/" }` in `package.json` to be where you want to output the frontend files. If you leave everything as is, it will create this folder structure **inside** the `distFolder`: 
+## Configuring paths
+Change `"paths": { "distFolder": "dist/" }` in `package.json` to be where you want to output the frontend files. If you leave everything as is, it will create this folder structure:
+<%_ if (projectType === 'html') { -%> 
 ```
 /dist
   |
@@ -70,6 +71,25 @@ Change `"paths": { "distFolder": "dist/" }` in `package.json` to be where you wa
   |- /css
   |- /js
 ```
+<%_ } else if (projectType === 'bedrock') { -%>
+```
+/web/app/themes/<%= wordpressTemplateName %>/static
+  |
+  |- /images
+  |- /fonts
+  |- /css
+  |- /js
+```
+<%_ } else if (projectType === 'craft') { -%>
+```
+/web/assets
+  |
+  |- /images
+  |- /fonts
+  |- /css
+  |- /js
+```
+<%_ } -%>
 If more control over the folder structure is needed inside `gulpfile.js` you can edit:
 ```javascript
 dist_css = path.join(dist_folder, '/css'),
@@ -78,6 +98,8 @@ dist_img = path.join(dist_folder, '/images'),
 dist_font = path.join(dist_folder, '/fonts'),
 dist_html = path.join(dist_folder, '/**/*.{twig,html}'),
 ```
+### WARNING: Whatever is inside the folder that is set as `paths.distFolder` will be deleted whenever `gulp build` or `gulp serve` commands are ran. This is to prevent caching of old build files. Be careful not to put anything else inside this folder.
+
 <%_ if (projectType === 'html') { -%>
 
 ## Injecting links to CSS and Javascript
@@ -102,6 +124,10 @@ For Javascript:
 ## Setting up purging of TailwindCSS 
 Make sure in your `package.json` that `"purgeFiles": []` contains an array to any files that contain tailwindcss classes. To learn more go to tailwindcss documentation about (optimizing for production)[https://tailwindcss.com/docs/optimizing-for-production].
 <%_ } -%> 
+
+## Customizing Webpack
+### Entry points
+Set paths.webpack.entry in `package.json` to contain the entry points for your project. More about Webpack [entry points](https://v4.webpack.js.org/concepts/entry-points/).
 
 ## Favicons
 Icons and `.webmanifest` are generated using `gulp-real-favicon`. Overwrite `src/favicon260x260.png` or change the variable `const favicon = path.join(src_folder, 'favicon260x260.png')` to point to the master image for generating the favicons. Master favicon image should be at least 260x260.
@@ -176,7 +202,7 @@ Make sure `paths.criticalPages` in `package.json` contains an object of the page
 	}
 }
 ```
-After running the command, CSS that should be inlined can be found in <%_ if (projectType === 'bedrock') { %>`web/app/themes/<%= wordpressTemplateName %>`<% } else if(projectType === 'craft') { %>`./templates/_includes/css/critical`<% } else { %>`dist/css/critical/`<% } %> folder.
+After running the command, CSS that should be inlined can be found in <%_ if (projectType === 'bedrock') { %>`web/app/themes/<%= wordpressTemplateName %>/static/css/critical`<% } else if(projectType === 'craft') { %>`./templates/_includes/css/critical`<% } else { %>`dist/css/critical/`<% } %> folder.
 
 ## `npm run build:dev`
 Builds out development version of frontend code.

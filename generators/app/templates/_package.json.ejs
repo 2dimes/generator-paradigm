@@ -18,6 +18,11 @@
     "distFolder": "dist/",
     "criticalCss": "dist/css/critical",
     <%_ } -%>
+    "webpack": {
+      "entry": {
+        "main": "./src/js/main.js"
+      }
+    },
     "criticalPages": {
         <%_ if (projectType === 'bedrock' || projectType === 'craft') { -%>
         "home": "<%= siteUrl %>"
