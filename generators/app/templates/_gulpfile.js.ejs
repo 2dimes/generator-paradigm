@@ -176,15 +176,17 @@ function genericAssets(done) {
 gulp.task('images', () => {
   return gulp.src(src_asset_img, { since: gulp.lastRun('images') })
     .pipe($.plumber())
-    .pipe($.imagemin({
-      progressive: true,
-      interlaced: true,
-
-      // don't remove IDs from SVGs, they are often used
-      // as hooks for embedding and styling
-      svgoPlugins: [{cleanupIDs: false}],
-      verbose: true
-    }))
+    .pipe($.imagemin([
+      $.imagemin.gifsicle({interlaced: true}),
+      $.imagemin.mozjpeg({quality: 75, progressive: true}),
+      $.imagemin.optipng({optimizationLevel: 5}),
+      $.imagemin.svgo({
+          plugins: [
+              {removeViewBox: true},
+              {cleanupIDs: false}
+          ]
+      })
+    ]))
     .pipe($.size({showFiles: true}))
     .pipe(gulp.dest(dist_img))
     .pipe(browserSync.stream());
