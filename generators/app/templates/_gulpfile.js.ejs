@@ -305,40 +305,7 @@ function lintJs() {
 function webpackJs() {
   return gulp.src(src_asset_js, { since: gulp.lastRun(webpackJs) })
     .pipe($.plumber())
-    .pipe(webpackStream({
-      mode: isProd ? 'production' : 'development',
-      entry: pkg.paths.webpack.entry,
-      output: {
-        filename: isProd ? '[name].min.js' : '[name].js'
-      },
-      devtool: isProd ? false : 'cheap-source-map',
-      module: {
-        rules: [
-          { 
-            test: /\.js$/, 
-            exclude: /(node_modules|bower_components)/,
-            use: {
-              loader: 'babel-loader',
-              options: {
-                presets: ['@babel/preset-env']
-              }
-            }
-          }<%_ if (includeJQuery || includeBootstrap) { -%>,
-          {
-            // expose jquery for use outside webpack
-            test: require.resolve('jquery'),
-            use: [{
-              loader: 'expose-loader',
-              options: 'jQuery'
-            },{
-              loader: 'expose-loader',
-              options: '$'
-            }]
-          }
-          <%_ } -%>
-        ]
-      }
-    }, webpack ))
+    .pipe(webpackStream(require('./webpack.config.js'), webpack ))
     .pipe(gulp.dest(dist_js));
 }
 

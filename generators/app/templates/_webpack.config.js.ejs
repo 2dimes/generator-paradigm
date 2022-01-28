@@ -1,0 +1,39 @@
+// Test if NODE_ENV production
+const isProd = process.env.NODE_ENV === 'production';
+
+module.exports = {
+    mode: isProd ? 'production' : 'development',
+    entry: {
+        main: './src/js/main.js'
+    },
+    output: {
+        filename: isProd ? '[name].min.js' : '[name].js'
+    },
+    devtool: isProd ? false : 'cheap-source-map',
+    module: {
+        rules: [
+            { 
+                test: /\.js$/, 
+                exclude: /(node_modules|bower_components)/,
+                use: {
+                  loader: 'babel-loader',
+                  options: {
+                    presets: ['@babel/preset-env']
+                  }
+                }
+            }<%_ if (includeJQuery || includeBootstrap) { -%>,
+            {
+                // expose jquery for use outside webpack
+                test: require.resolve('jquery'),
+                use: [{
+                  loader: 'expose-loader',
+                  options: 'jQuery'
+                },{
+                  loader: 'expose-loader',
+                  options: '$'
+                }]
+            }
+          <%_ } -%>
+        ]
+    }
+};

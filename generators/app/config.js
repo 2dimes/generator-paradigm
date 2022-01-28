@@ -36,6 +36,10 @@ module.exports = {
       output: 'gulpfile.js',
     },
     {
+      input: '_webpack.config.js.ejs',
+      output: 'webpack.config.js',
+    },
+    {
       input: '_package.json.ejs',
       output: 'package.json',
     },
