@@ -277,7 +277,7 @@ function sass() {
   return gulp.src(src_asset_scss)
     .pipe($.dependents())
     .pipe($.if(!isProd, $.sourcemaps.init()))      
-    .pipe($.sass().on('error', function(err) {
+    .pipe($.dartSass().on('error', function(err) {
       buildLog({ 
         type: 'error',
         source: err.plugin, 
