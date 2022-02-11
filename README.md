@@ -1,9 +1,15 @@
 # Paradigm Website Project Generator
-> A yeoman generator for web development projects at [Paradigm Marketing & Creative](https://2dimes.com) in Memphis, TN. 
-> ![Paradigm Marketing & Creative](https://rawgithub.com/2dimes/generator-paradigm/master/paradigm-logo.svg)
-> Includes a Gulp workflow that uses sass, Webpack, babel.js, image minification, and browsersync. Project type options available for static html, [roots/bedrock](https://roots.io/bedrock/), or [Craft CMS](https://craftcms.com/docs/3.x/).
+> A yeoman generator for web development projects at [Paradigm Marketing & Creative](https://2dimes.com) in Memphis, TN.
+> 
+> ![Paradigm Marketing & Creative](https://raw.githubusercontent.com/2dimes/generator-paradigm/master/paradigm-logo.svg)
+>
+> Includes a Gulp workflow that uses sass, Webpack, babel.js, image minification, and browsersync. 
+> Project types available:
+> 1. Static html
+> 2. [roots/bedrock](https://roots.io/bedrock/)
+> 3. [Craft CMS](https://craftcms.com/docs/3.x/)
 
-[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]
+[![NPM version][npm-image]][npm-url]
 
 ## Installation
 
@@ -27,8 +33,8 @@ These are current the options for project types:
 3. Static HTML
 
 In order to use Bedrock or Craft CMS options, you must have the follow requirements:
-* [Composer](https://getcomposer.org/)
-* [Larvel Valet](https://laravel.com/docs/8.x/valet) or some other development environment like MAMP or XAMP
+* [Composer v2](https://getcomposer.org/)
+* [Larvel Valet](https://laravel.com/docs/8.x/valet) or some other development environment that can use PHP.
 * MySQL or PostgreSQL
   - How to install MySQL on Mac using Homebrew - [https://gist.github.com/operatino/392614486ce4421063b9dece4dfe6c21]
   - How to install PostgreSQL on Mac - [https://www.moncefbelyamani.com/how-to-install-postgresql-on-a-mac-with-homebrew-and-lunchy/]

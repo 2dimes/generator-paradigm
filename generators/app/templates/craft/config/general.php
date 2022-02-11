@@ -53,6 +53,9 @@ return [
         // The secure key Craft will use for hashing and encrypting data
         'securityKey' => App::env('SECURITY_KEY'),
 
+        // Stop Craft from sending X-powered-by header
+        'sendPoweredByHeader' => false,
+
     ],
 
     // Dev environment settings

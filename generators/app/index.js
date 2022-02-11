@@ -127,7 +127,7 @@ module.exports = class extends Generator {
         name: 'siteUrl',
         message: 'What is the url for the site?',
         default() {
-          return `https://${path.basename(process.cwd())}.test`;
+          return `http://${path.basename(process.cwd())}.test`;
         },
         validate(input) {
           if (validURL(input)) {

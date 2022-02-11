@@ -1,14 +1,17 @@
 {
   "require": {
-    "craftcms/cms": "^3.6.16",
-    "craftcms/mailgun": "^1.4",
-    "craftcms/redactor": "2.8.5",
-    "dolphiq/redirect": "1.1.0",
-    "mmikkel/retcon": "^2.2",
-    "nystudio107/craft-seomatic": "3.3.26",
+    "barrelstrength/sprout-fields": "^3.8.5",
+    "craftcms/cms": "3.7.32",
+    "craftcms/mailgun": "^2.0",
+    "craftcms/redactor": "^2.9.1",
+    "dolphiq/redirect": "^1.1.0",
+    "mmikkel/retcon": "^2.3",
+    "nystudio107/craft-seomatic": "^3.3.26",
+    "pennebaker/craft-architect": "^2.4",
     "putyourlightson/craft-dashboard-begone": "^1.0",
     "sebastianlenz/linkfield": "^1.0",
     "verbb/field-manager": "^2.2",
+    "verbb/navigation": "^1.4.24",
     "verbb/super-table": "^2.6",
     "vlucas/phpdotenv": "^3.4.0"
   },

@@ -37,6 +37,41 @@
     ]
     <%_ } -%>
   },
+  "globs": {
+    "src": {
+      <%_ if (projectType === 'html') { -%>
+      "html": ["./src/**/*.html"],
+      <%_ } -%>
+      "scss": ["./src/scss/**/*.scss"],
+      "js": ["./src/js/**/*.js"],
+      "images": ["./src/images/**/*.+(png|jpg|jpeg|gif|svg|ico)", "!./src/images/icons/**/*"],
+      "icons": ["./src/images/icons/**/*.svg"],
+      "fonts": ["./src/fonts/**/*.{eot,svg,ttf,woff,woff2}"],
+      "genericAssets": []
+    },
+    "dist": {
+      <%_ if (projectType === 'bedrock') { -%>
+      "css": ["./web/app/themes/<%= wordpressTemplateName %>/static/css"],
+      "js": ["./web/app/themes/<%= wordpressTemplateName %>/static/js"],
+      "images": ["./web/app/themes/<%= wordpressTemplateName %>/static/images"],
+      "icons": ["./web/app/themes/<%= wordpressTemplateName %>/static/images/icons"],
+      "fonts": ["./web/app/themes/<%= wordpressTemplateName %>/static/fonts"]
+      <%_ } else if (projectType === 'craft') { -%>
+      "css": ["./web/assets/css"],
+      "js": ["./web/assets/js"],
+      "images": ["./web/assets/images"],
+      "icons": ["./web/assets/images/icons"],
+      "fonts": ["./web/assets/fonts"]
+      <%_ } else { -%>
+      "html": ["./dist/**/*.{twig,html}"],
+      "css": ["./dist/css"],
+      "js": ["./dist/js"],
+      "images": ["./dist/images"],
+      "icons": ["./dist/images/icons"],
+      "fonts": ["./dist/fonts"]
+      <%_ } -%>
+    }
+  },
   "favicon": {
     "image": "./src/favicon260x260.png",
     "themeColor": "#ffffff",
@@ -76,6 +111,7 @@
     "gulp-replace": "^1.0.0",
     "gulp-size": "^3.0.0",
     "gulp-sourcemaps": "^2.6.5",
+    "gulp-svg-sprite": "^1.5.0",
     "gulp-uglify": "^3.0.2",
     "postcss": "^8.1.10",
     "postcss-clean": "^1.1.0",

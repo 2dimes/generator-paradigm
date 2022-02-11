@@ -81,6 +81,7 @@ module.exports = {
   bedrock: {
     dirsToCreate: (el) => [
       `web/app/themes/${el.wordpressTemplateName}/static/`,
+      'src/images/icons',
     ],
     filesToCopy: [
       {
@@ -203,6 +204,11 @@ module.exports = {
       {
         input: 'craft/web',
         output: 'web',
+      },
+      // JSON file for importing base fields using Architect plugin
+      {
+        input: 'craft/architect_base_fields.json',
+        output: 'architect_base_fields.json',
       },
     ],
     filesToRender: (el) => [

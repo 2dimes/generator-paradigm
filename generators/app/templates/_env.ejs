@@ -26,6 +26,9 @@ AUTH_SALT='<%= generateSalt() %>'
 SECURE_AUTH_SALT='<%= generateSalt() %>'
 LOGGED_IN_SALT='<%= generateSalt() %>'
 NONCE_SALT='<%= generateSalt() %>'
+
+# Used for cache busting css and js files
+ASSET_VERSION=0.0.1
 <%_ } else if (projectType === 'craft') { -%>
 # The environment Craft is currently running in (dev, staging, production, etc.)
 ENVIRONMENT=dev

@@ -65,6 +65,7 @@ function cacheBust($versionNumber = null) {
 	}
 };
 
+
 /**
  * We're going to configure our theme inside of a subclass of Timber\Site
  * You can move this to its own file and include here via php's include("MySite.php")
@@ -118,6 +119,12 @@ class StarterSite extends Timber\Site {
 		$context['stuff'] = 'I am a value set in your functions.php file';
 		$context['notes'] = 'These values are available everytime you call Timber::context();';
 		$context['menu']  = new Timber\Menu();
+
+		// Add google maps .env variable to context
+		$environment_variables = array(
+			'google_maps_api_key' => env('GOOGLE_MAPS_API_KEY')
+		);
+		$context['dotenv'] = $environment_variables;
 
 		if( class_exists('ACF') ) {
 			$context['options'] = get_fields('option');
@@ -215,17 +222,18 @@ class StarterSite extends Timber\Site {
 
 		//wp_register_style('type-kit-fonts', 'https://use.typekit.net/jup0oph.css'); // how to add fonts
 
+		$stylesCss = get_template_directory_uri() . '/static/css/styles.css';
+		$mainJs = get_template_directory_uri() . '/static/js/main.js';
+
 		if(WP_ENV == 'production') {
-			// Styles
-			wp_register_style('style', get_template_directory_uri() . '/static/css/styles.min.css', array(), cacheBust('1.0.0'));
-			// Scripts
-			wp_register_script('main-js', get_template_directory_uri() . '/static/js/main.min.js', array(), cacheBust(), true);
-		} else {
-			// Styles
-			wp_register_style('style', get_template_directory_uri() . '/static/css/styles.css', array(), cacheBust('1.0.0'));
-			// Scripts
-			wp_register_script('main-js', get_template_directory_uri() . '/static/js/main.js', array(), cacheBust(), true);
+			$stylesCss = get_template_directory_uri() . '/static/css/styles.min.css';
+			$mainJs = get_template_directory_uri() . '/static/js/main.min.js';
 		}
+
+		// Styles
+		wp_register_style('style', $stylesCss, array(), cacheBust(ASSET_VERSION));
+		// Scripts
+		wp_register_script('main-js', $mainJs, array(), cacheBust(ASSET_VERSION), true);
 	}
 
 	//------------------------------------
@@ -262,6 +270,13 @@ class StarterSite extends Timber\Site {
 	function remove_block_library_css(){
 	    wp_dequeue_style( 'wp-block-library' );
 	    wp_dequeue_style( 'wp-block-library-theme' );
+	}
+
+	//------------------------------------
+	// Register google maps API key for ACF
+	//------------------------------------
+	function my_acf_init() {
+	    acf_update_setting('google_api_key', env('GOOGLE_MAPS_API_KEY'));
 	}
 
 }

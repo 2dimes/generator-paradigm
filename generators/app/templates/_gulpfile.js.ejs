@@ -23,23 +23,23 @@ const gulp                      = require('gulp'),
 
       // Paths to source of assets
       src_folder                = pkg.paths.srcFolder,
-      src_asset_scss            = path.join(src_folder, '/scss/**/*.scss'),
-      src_asset_js              = path.join(src_folder, '/js/**/*.js'),
-      src_asset_img             = path.join(src_folder, '/images/**/*.+(png|jpg|jpeg|gif|svg|ico)'),
-      src_asset_font            = path.join(src_folder, '/fonts/**/*.{eot,svg,ttf,woff,woff2}'),
+      src_asset_scss            = pkg.globs.src.scss,
+      src_asset_js              = pkg.globs.src.js,
+      src_asset_img             = pkg.globs.src.images,
+      src_asset_font            = pkg.globs.src.fonts,
       <%_ if (projectType === 'html') { -%>
-      src_asset_html            = path.join(src_folder, '/**/*.html'),
+      src_asset_html            = pkg.globs.src.html,
       <%_ } -%>
       // Add any other assets that just need to be copied over to dist folder
-      src_generic_assets        = [],
+      src_generic_assets        = pkg.globs.src.genericAssets,
 
       // Paths you want to output assets to
       dist_folder               = pkg.paths.distFolder, // change to whatever root you want it to be.
-      dist_css                  = path.join(dist_folder, '/css'),
-      dist_js                   = path.join(dist_folder, '/js'),
-      dist_img                  = path.join(dist_folder, '/images'),
-      dist_font                 = path.join(dist_folder, '/fonts'),
-      dist_html                 = path.join(dist_folder, '/**/*.{twig,html}'),
+      dist_css                  = pkg.globs.dist.css,
+      dist_js                   = pkg.globs.dist.js,
+      dist_img                  = pkg.globs.dist.images,
+      dist_font                 = pkg.globs.dist.fonts,
+      dist_html                 = <% if (projectType === 'html') { %>pkg.globs.dist.html<% } else { %>pkg.paths.templatesFolder<% } %>,
 
       critical_css              = pkg.paths.criticalCss;
 
@@ -191,6 +191,32 @@ gulp.task('images', () => {
     .pipe(gulp.dest(dist_img))
     .pipe(browserSync.stream());
 });
+
+
+// Generate icon svg sprite
+function icons(done) {
+  gulp.src(pkg.globs.src.icons)
+    .pipe($.svgSprite({
+      shape: {
+        dimension: { // Set maximum dimensions
+          maxWidth: 50,
+          maxHeight: 50
+        },
+        spacing: { // Add padding
+          padding: 0
+        },
+        dest: 'out/intermediate-svg' // Keep the intermediate files
+      },
+      mode: {
+        symbol: true // Activate the «symbol» mode
+      }
+    }))
+    .pipe(gulp.dest(pkg.globs.dist.icons));
+
+  done();
+}
+
+exports.icons = icons;
 
 
 function fonts(done) {
@@ -484,6 +510,7 @@ gulp.task('watch', (done) => {
   gulp.watch(src_asset_scss, gulp.series('css'));
   gulp.watch(src_asset_js, gulp.series('js', reloadAndDone));
   gulp.watch(src_asset_img, gulp.series('images', reloadAndDone));
+  gulp.watch(pkg.globs.src.icons, gulp.series(icons, reloadAndDone));
   gulp.watch(src_asset_font, gulp.series('fonts', reloadAndDone));
 
   <%_ if (projectType === 'craft' || projectType === 'bedrock') { -%>
@@ -503,6 +530,7 @@ gulp.task('build',
       <%_ } -%>
       'service-worker', 
       'images', 
+      icons,
       fonts, 
       'css', 
       'js', 
@@ -522,7 +550,8 @@ gulp.task('serve',
       <%_ if (projectType === 'html') { -%>
       'html',
       <%_ } -%>
-      'images', 
+      'images',
+      icons, 
       fonts, 
       'css', 
       'js'
