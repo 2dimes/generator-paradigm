@@ -57,7 +57,11 @@ module.exports = class extends Generator {
 
     // Have Yeoman greet the user.
     this.log(
-      yosay(`${chalk.green('Paradigm Marketing & Creative')} project starter!`)
+      yosay(
+        `'allo!\n Welcome to the ${chalk.green(
+          'Paradigm Marketing & Creative'
+        )} project starter!`
+      )
     );
 
     // Capitalizes the Site Name
@@ -170,6 +174,30 @@ module.exports = class extends Generator {
         when: (answers) => answers.projectType.includes('bedrock'),
       },
       {
+        type: 'input',
+        name: 'adminUsername',
+        message: 'Enter a username for the admin:',
+        default: 'admin',
+        when: (answers) => answers.projectType.includes('bedrock'),
+      },
+      {
+        type: 'input',
+        name: 'adminEmail',
+        message: 'Enter the email for the admin:',
+        default: 'info@2dimes.com',
+        when: (answers) => answers.projectType.includes('bedrock'),
+      },
+      {
+        type: 'input',
+        name: 'adminPassword',
+        message: 'Enter a password for the admin:',
+        default: () =>
+          Array(...Array(12))
+            .map(getRandomChar)
+            .join(''),
+        when: (answers) => answers.projectType.includes('bedrock'),
+      },
+      {
         type: 'checkbox',
         name: 'features',
         message: 'Which additional features would you like to include?',
@@ -241,6 +269,11 @@ module.exports = class extends Generator {
       this.dbName = answers.dbName;
       this.dbUser = answers.dbUser;
       this.dbPassword = answers.dbPassword;
+
+      // Bedrock options
+      this.adminUsername = answers.adminUsername;
+      this.adminEmail = answers.adminEmail;
+      this.adminPassword = answers.adminPassword;
 
       const { features } = answers;
       const hasFeature = (feat) => features && features.includes(feat);
@@ -419,20 +452,39 @@ module.exports = class extends Generator {
           `Thanks for using the Paradigm Starter Kit!\nTry running 'npm run serve' to check out your new fancy project!\nCheers 🍻!`
         )
       );
-    } else {
-      this.log(yosay(`Thanks for using the Paradigm Starter Kit!\nCheers 🍻!`));
     }
 
     if (this.projectType === 'craft') {
-      // Generate security key and app id in .env file
-      // this.spawnCommandSync('php', ['craft', 'setup/security-key']);
-      // this.spawnCommandSync('php', ['craft', 'setup/app-id']);
-
       this.log(
-        yosay("g'day!\nGonna run you through `php craft install` process now.")
+        yosay("g'day!\nGonna run you through `php craft setup` process now.")
       );
 
       this.spawnCommandSync('php', ['craft', 'setup']);
     }
+
+    if (this.projectType === 'bedrock') {
+      this.log(yosay("g'day!\nI'm now going to run 'wp core install' now."));
+
+      this.spawnCommandSync('wp', [
+        'core',
+        'install',
+        `--url=${this.siteUrl}`,
+        `--title=${this.projectName}`,
+        `--admin_user=${this.adminUsername}`,
+        `--admin_email=${this.adminEmail}`,
+        `--admin_password=${this.adminPassword}`,
+      ]);
+
+      this.log(`
+        -----------------------------------------------
+        ${chalk.bold.green('Wordpress has been installed! 🥳')}
+
+        You can log in as
+        ${chalk.bold.green('Username:')} ${this.adminUsername}
+        ${chalk.bold.green('Password:')} ${this.adminPassword}
+        -----------------------------------------------`);
+    }
+
+    this.log(yosay(`Thanks for using the Paradigm Starter Kit!\nCheers 🍻!`));
   }
 };
