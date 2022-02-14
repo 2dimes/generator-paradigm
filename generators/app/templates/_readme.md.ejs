@@ -31,15 +31,15 @@
 * Craft CMS v3.5.10 - Craft is a flexible, user-friendly CMS for creating custom digital experiences on the web and beyond. [Documentation](https://craftcms.com/docs/3.x/)
 <%_ } -%>
 * Gulp 4 - [Documentation](https://gulpjs.com/docs/en/getting-started/quick-start)
-* Sass Compiling (using gulp-sass) - [Documentation](https://github.com/dlmanning/gulp-sass)
+* Sass Compiling (using gulp-dart-sass) - [Documentation](https://github.com/mattdsteele/gulp-dart-sass)
 * PostCSS (using gulp-postcss) - [Documentation](https://github.com/postcss/gulp-postcss)
 * Babel.js - [Documentation](https://babeljs.io/docs/en/)
 * ESlint (using gulp-eslint) - [Documentation](https://github.com/adametry/gulp-eslint#readme)
-* Webpack 4 (for javascript dependencies) - [Documentation](https://v4.webpack.js.org/concepts/)
+* Webpack 5 (for javascript dependencies) - [Documentation](https://webpack.js.org/concepts/)
 <%_ if (projectType === 'html') { -%>
 * BrowserSync - [Documentation](https://www.browsersync.io/docs)
 <%_ } -%>
-* Minification of CSS and JS for production use (using [cssnano](https://github.com/cssnano/cssnano) and Webpack's built in optimization of ['production' mode](https://v4.webpack.js.org/configuration/mode/))
+* Minification of CSS and JS for production use (using [cssnano](https://github.com/cssnano/cssnano) and Webpack's built in optimization of ['production' mode](https://webpack.js.org/guides/production/#minification))
 * Favicon Generation (using gulp-real-favicon) - [Documentation](https://github.com/RealFaviconGenerator/gulp-real-favicon)
 
 <%_ if (includeAlpine || includeJQuery || includeTailwind || includeBootstrap) { -%>
@@ -47,7 +47,7 @@
 <%_ } if (includeAlpine) { -%>
 * Alpine.js - [Documentation](https://github.com/alpinejs/alpine)
 <%_ } if (includeTailwind) { -%>
-* Tailwind CSS v2.0 - [Documentation](https://tailwindcss.com/docs)
+* Tailwind CSS v2.0 - [Documentation](https://v2.tailwindcss.com/docs)
 <%_ } if (includeLazyload) { -%>
 * Vanill Lazyload - [Documentation](https://github.com/verlok/vanilla-lazyload/tree/17.1.3)
 <%_ } if (includeJQuery) { -%>
@@ -59,6 +59,19 @@
 # Getting Started
 
 ---
+
+<%_ if (projectType === 'craft') { -%>
+## Install basic fields
+You can install some basic fields to get started with by using the [Architect plugin](https://plugins.craftcms.com/architect).
+
+First, make sure craft has been enabled to pro level and then install the following plugins (because the fields being imported use them):
+* Architect
+* SEOmatic
+* Typed Link Field 
+* Redactor
+* Sprout Fields
+Then copy the contents of the file `architect_base_fields.json` that is in the root of this directory and then paste in into the architect import field.
+<%_ } -%>
 
 ## Configuring paths
 Change `"paths": { "distFolder": "dist/" }` in `package.json` to be where you want to output the frontend files. If you leave everything as is, it will create this folder structure:
@@ -90,14 +103,8 @@ Change `"paths": { "distFolder": "dist/" }` in `package.json` to be where you wa
   |- /js
 ```
 <%_ } -%>
-If more control over the folder structure is needed inside `gulpfile.js` you can edit:
-```javascript
-dist_css = path.join(dist_folder, '/css'),
-dist_js = path.join(dist_folder, '/js'),
-dist_img = path.join(dist_folder, '/images'),
-dist_font = path.join(dist_folder, '/fonts'),
-dist_html = path.join(dist_folder, '/**/*.{twig,html}'),
-```
+If more control over the folder structure is needed - you will want to look at `package.json` and edit the "paths" values and the "globs" values.
+
 ### WARNING: Whatever is inside the folder that is set as `paths.distFolder` will be deleted whenever `gulp build` or `gulp serve` commands are ran. This is to prevent caching of old build files. Be careful not to put anything else inside this folder.
 
 <%_ if (projectType === 'html') { -%>
