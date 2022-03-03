@@ -34,7 +34,7 @@
         {# CSS #}
         {% set mainCssKey = 'mainCss' %}
 
-        {% if craft.app.config.general.devMode %}
+        {% if craft.app.config.env == 'dev' %}
             {% set mainCssPath = "/assets/css/styles.css" %}
         {% else %}
             {% set mainCssPath = "/assets/css/styles.min.css?v=#{ assetVersion }" %}
@@ -89,7 +89,7 @@
         {% include "_includes/_footer" %}
 
         {% block footerJsFiles %}
-            {% if craft.app.config.general.devMode %}
+            {% if craft.app.config.env == 'dev' %}
                 <script type="text/javascript" src="{{ siteUrl }}assets/js/main.js"></script>
             {% else %}
                 <script type="text/javascript" src="{{ siteUrl }}assets/js/main.min.js?v={{ assetVersion }}"></script>

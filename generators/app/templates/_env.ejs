@@ -29,6 +29,9 @@ NONCE_SALT='<%= generateSalt() %>'
 
 # Used for cache busting css and js files
 ASSET_VERSION=0.0.1
+
+# Google Maps API key
+GOOGLE_MAPS_API_KEY=
 <%_ } else if (projectType === 'craft') { -%>
 # The environment Craft is currently running in (dev, staging, production, etc.)
 ENVIRONMENT=dev
@@ -68,7 +71,7 @@ PRIMARY_SITE_URL=<%= siteUrl %>
 # System Email info
 EMAIL_ADDRESS=
 MAILGUN_EMAIL_DOMAIN=
-MAILGUN_EMAIL_APIKEY=
+MAILGUN_EMAIL_API_KEY=
 
 # Google Recaptcha
 RECAPTCHA_SITE_KEY=
