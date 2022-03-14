@@ -514,7 +514,7 @@ gulp.task('watch', (done) => {
   gulp.watch(src_asset_font, gulp.series('fonts', reloadAndDone));
 
   <%_ if (projectType === 'craft' || projectType === 'bedrock') { -%>
-  gulp.watch(pkg.paths.templatesFolder).on('change', browserSync.reload);
+  gulp.watch(pkg.paths.templatesFolder, gulp.series('css', reloadAndDone));
   <%_ } -%>
 
   done();

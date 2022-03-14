@@ -413,7 +413,7 @@ module.exports = class extends Generator {
 
     if (this.includeTailwind) {
       pkgJson.devDependencies['gulp-tailwindcss-export-config'] = '^1.0.1';
-      pkgJson.devDependencies.tailwindcss = '^2.2.6';
+      pkgJson.devDependencies.tailwindcss = '^3.0.23';
 
       copy('tailwind.config.js', 'tailwind.config.js');
     }
