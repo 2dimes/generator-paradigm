@@ -33,7 +33,18 @@ module.exports = {
                   options: '$'
                 }]
             }
-          <%_ } -%>
+          <%_ } %>
         ]
+    },
+    optimization: {
+        chunkIds: 'named',
+        splitChunks: {
+            chunks: 'all',
+            name(module, chunks, cacheGroupKey) {
+                const allChunksNames = chunks.map((item) => item.name).join('~');
+                return `${cacheGroupKey}-${allChunksNames}`;
+            },
+            filename: isProd ? '[name].min.js' : '[name].js',
+        }
     }
 };
