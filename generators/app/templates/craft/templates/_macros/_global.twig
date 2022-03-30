@@ -31,6 +31,10 @@
 #}
 {% macro responsiveImage(image, imageOptimize = null, sizes = "100vw", lazyLoad = false, attr = { class: [] } ) %}
 
+    {% if not attr.class is defined %}
+        {% set attr = attr|merge({ class: [] }) %}
+    {% endif %}
+
     {% if lazyLoad %}
         {% set attr = attr|merge({ class: attr.class|merge(['lazy']) }) %}
     {% endif %}
