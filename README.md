@@ -11,9 +11,10 @@
 
 [![NPM version][npm-image]][npm-url]
 
+
 ## Installation
 
-First, install [Yeoman](http://yeoman.io) and generator-gulp-starter-kit using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
+First, install [Yeoman](http://yeoman.io) and generator-paradigm using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
 
 ```bash
 npm install -g yo
@@ -33,8 +34,8 @@ These are current the options for project types:
 3. Static HTML
 
 In order to use Bedrock or Craft CMS options, you must have the follow requirements:
-* [Composer v2](https://getcomposer.org/)
-* [Larvel Valet](https://laravel.com/docs/8.x/valet) or some other development environment that can use PHP.
+* [Composer](https://getcomposer.org/)
+* Local Development environment using something like [Larvel Valet](https://laravel.com/docs/8.x/valet), [DDEV](https://ddev.readthedocs.io/en/stable/), or some other development environment like MAMP or XAMP.
 * MySQL or PostgreSQL
   - How to install MySQL on Mac using Homebrew - [https://gist.github.com/operatino/392614486ce4421063b9dece4dfe6c21]
   - How to install PostgreSQL on Mac - [https://www.moncefbelyamani.com/how-to-install-postgresql-on-a-mac-with-homebrew-and-lunchy/]
