@@ -118,7 +118,7 @@ class StarterSite extends Timber\Site {
 		$context['foo']   = 'bar';
 		$context['stuff'] = 'I am a value set in your functions.php file';
 		$context['notes'] = 'These values are available everytime you call Timber::context();';
-		$context['menu']  = new Timber\Menu();
+		$context['primary_menu']  = new Timber\Menu('primary_menu');
 
 		// Add google maps .env variable to context
 		$environment_variables = array(
@@ -186,6 +186,10 @@ class StarterSite extends Timber\Site {
 		);
 
 		add_theme_support( 'menus' );
+
+		register_nav_menus( array(
+            'primary_menu' => __( 'Primary Menu', 'text_domain' ),
+        ) );
 	}
 
 	/** This Would return 'foo bar!'.
