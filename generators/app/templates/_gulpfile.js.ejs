@@ -320,11 +320,16 @@ gulp.task('css', gulp.series(<%_ if (includeTailwind) { -%>exportTailwindConfig,
 
 
 // Lint JavaScript
-function lintJs() {
-  return gulp.src(src_asset_js, { since: gulp.lastRun(lintJs) })
+function lintJs(done) {
+  const f = $.filter(['**', '!**/vendor/**/*.js']);
+
+  gulp.src(src_asset_js, { since: gulp.lastRun(lintJs) })
+    .pipe(f)
     .pipe($.eslint())
     .pipe($.eslint.format())
-    .pipe($.if(!browserSync.active, $.eslint.failAfterError()))
+    .pipe($.if(!browserSync.active, $.eslint.failAfterError()));
+
+  done();
 }
 
 
@@ -335,7 +340,18 @@ function webpackJs() {
     .pipe(gulp.dest(dist_js));
 }
 
-gulp.task('js', gulp.series(lintJs, webpackJs));
+function vendorJs(done) {
+  const f = $.filter(['**/vendor/**/*.js']);
+
+  gulp.src(src_asset_js, { since: gulp.lastRun(vendorJs) })
+    .pipe($.plumber())
+    .pipe(f)
+    .pipe(gulp.dest(dist_js));
+
+  done();
+}
+
+gulp.task('js', gulp.series(lintJs, gulp.parallel(webpackJs, vendorJs)));
 
 
 // service worker compile and copy
