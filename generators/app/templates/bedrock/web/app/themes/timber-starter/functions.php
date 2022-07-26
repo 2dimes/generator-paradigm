@@ -227,17 +227,20 @@ class StarterSite extends Timber\Site {
 		//wp_register_style('type-kit-fonts', 'https://use.typekit.net/jup0oph.css'); // how to add fonts
 
 		$stylesCss = get_template_directory_uri() . '/static/css/styles.css';
+		$vendorJsDefault = get_template_directory_uri() . '/static/js/defaultVendors-main.js';
 		$mainJs = get_template_directory_uri() . '/static/js/main.js';
 
 		if(WP_ENV == 'production') {
 			$stylesCss = get_template_directory_uri() . '/static/css/styles.min.css';
+			$vendorJsDefault = get_template_directory_uri() . '/static/js/defaultVendors-main.min.js';
 			$mainJs = get_template_directory_uri() . '/static/js/main.min.js';
 		}
 
 		// Styles
 		wp_register_style('style', $stylesCss, array(), cacheBust(ASSET_VERSION));
 		// Scripts
-		wp_register_script('main-js', $mainJs, array(), cacheBust(ASSET_VERSION), true);
+		wp_register_script('vendor-main-js', $vendorJsDefault, arra(), cacheBust(ASSET_VERSION), true);
+		wp_register_script('main-js', $mainJs, array('vendor-main-js'), cacheBust(ASSET_VERSION), true);
 	}
 
 	//------------------------------------

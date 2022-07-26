@@ -132,9 +132,6 @@ module.exports = {
             '-full': '-100%'
         },
     },
-    variants: {
-        translate: ['responsive', 'hover', 'group-hover'],
-    },
     plugins: [
     ]
 }

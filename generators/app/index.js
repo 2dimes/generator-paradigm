@@ -231,6 +231,11 @@ module.exports = class extends Generator {
             checked: false,
           },
           {
+            name: `Swiper - ${chalk.magenta('v7 (https://swiperjs.com/)')}`,
+            value: 'includeSwiper',
+            checked: false,
+          },
+          {
             name: `Fancybox - ${chalk.magenta(
               'v4.0.0-beta.0 (https://github.com/fancyapps/ui)'
             )}`,
@@ -285,6 +290,7 @@ module.exports = class extends Generator {
       this.includeAlpine = hasFeature('includeAlpine');
       this.includeLazyload = hasFeature('includeLazyload');
       this.includeFlickity = hasFeature('includeFlickity');
+      this.includeSwiper = hasFeature('includeSwiper');
       this.includeFancybox = hasFeature('includeFancybox');
       this.includeGSAP = hasFeature('includeGSAP');
       this.includeJQuery = answers.includeJQuery;
@@ -319,6 +325,7 @@ module.exports = class extends Generator {
       includeAlpine: this.includeAlpine,
       includeLazyload: this.includeLazyload,
       includeFlickity: this.includeFlickity,
+      includeSwiper: this.includeSwiper,
       includeFancybox: this.includeFancybox,
       includeGSAP: this.includeGSAP,
 
@@ -387,7 +394,7 @@ module.exports = class extends Generator {
     }
 
     if (this.includeAlpine) {
-      pkgJson.dependencies.alpinejs = '^2.7.1';
+      pkgJson.dependencies.alpinejs = '^3.10.0';
     }
 
     if (this.includeLazyload) {
@@ -398,8 +405,17 @@ module.exports = class extends Generator {
       pkgJson.dependencies.flickity = '^2.2.0';
     }
 
+    if (this.includeSwiper) {
+      pkgJson.dependencies.swiper = '^7.3.4';
+
+      // Copy over sass files
+      config.swiper.filesToCopy.forEach((file) => {
+        copy(file.input, file.output);
+      });
+    }
+
     if (this.includeFancybox) {
-      pkgJson.dependencies['@fancyapps/ui'] = '^4.0.0-beta.0';
+      pkgJson.dependencies['@fancyapps/ui'] = '^4.0.17';
 
       // Copy over sass files
       config.fancybox4.filesToCopy.forEach((file) => {
@@ -413,7 +429,7 @@ module.exports = class extends Generator {
 
     if (this.includeTailwind) {
       pkgJson.devDependencies['gulp-tailwindcss-export-config'] = '^1.0.1';
-      pkgJson.devDependencies.tailwindcss = '^3.0.23';
+      pkgJson.devDependencies.tailwindcss = '^3.1.6';
 
       copy('tailwind.config.js', 'tailwind.config.js');
     }

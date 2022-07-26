@@ -226,4 +226,12 @@ module.exports = {
       },
     ],
   },
+  swiper: {
+    filesToCopy: [
+      {
+        input: 'src/scss/vendor/swiper',
+        output: 'src/scss/vendor/swiper',
+      },
+    ],
+  },
 };

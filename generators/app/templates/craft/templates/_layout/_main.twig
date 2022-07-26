@@ -90,9 +90,11 @@
 
         {% block footerJsFiles %}
             {% if craft.app.config.env == 'dev' %}
-                <script type="text/javascript" src="{{ siteUrl }}assets/js/main.js"></script>
+                {% js "/assets/js/defaultVendors-main.js" %}
+                {% js "/assets/js/main.js" %}
             {% else %}
-                <script type="text/javascript" src="{{ siteUrl }}assets/js/main.min.js?v={{ assetVersion }}"></script>
+                {% do view.registerJsFile("/assets/js/defaultVendors-main.min.js?v=" ~ assetVersion ) %}
+                {% do view.registerJsFile("assets/js/defaultVendors-main.min.js?v" ~ assetVersion) %}
             {% endif %}
         {% endblock %}
 
