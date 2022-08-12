@@ -4,6 +4,22 @@
 const $ = require('gulp-load-plugins')({ pattern: ['gulp-*'] });
 
 const pkg = require('./package.json');
+const dotenv = require('dotenv').config();
+<%_ if (projectType === 'bedrock' || projectType === 'craft') { -%>
+const site_hostname = new URL(<%_ if (projectType === 'bedrock') { -%>
+    process.env.WP_HOME
+  <%_ } else if (projectType === 'craft') { -%>
+    process.env.PRIMARY_SITE_URL
+  <%_ } -%>).hostname;
+<%_ } -%>
+
+// Set environment based on .env variable
+<%_ if (projectType === 'bedrock') { -%>
+process.env.NODE_ENV = (process.env.WP_ENV === 'dev' || process.env.WP_ENV === 'development') ? 'development' : 'production';
+<%_ } else { -%>
+process.env.NODE_ENV = (process.env.ENVIRONMENT === 'dev' || process.env.ENVIRONMENT === 'development') ? 'development' : 'production';
+<%_ } -%>
+
 
 const gulp                      = require('gulp'),
       fs                        = require('fs'),
@@ -144,13 +160,15 @@ function clean() {
   const files_to_clean = [ dist_folder, temp_folder ];
   <%_ } -%>
 
+  const flat_files_to_clean = files_to_clean.flat();
+
   buildLog({
     type: 'info',
     source: 'gulp clean',
-    message: `Deleting:\n ${colors.info(files_to_clean)}`
+    message: `Deleting:\n ${colors.info(flat_files_to_clean)}`
   });
 
-  return del(files_to_clean);
+  return del(flat_files_to_clean);
 }
 
 exports.clean = clean;
@@ -231,17 +249,24 @@ exports.fonts = fonts;
 <%_ if (projectType === 'html') { -%>
 
 
-gulp.task('html', () => {
-  return gulp.src(src_asset_html, {
+function html(done) {
+  gulp.src(src_asset_html, {
       base: src_folder,
       since: gulp.lastRun('html')
     })
     .pipe(gulp.dest(dist_folder));
-});
+
+  done();
+}
+
+exports.html = html;
 <%_ } -%>
 
 function injectCssJss(done) {
-  const sources = gulp.src([path.join(dist_css, '**/*.css'), path.join(dist_js, '**/*.js')], {read: false});
+  const cssFolder = dist_css.map(item => path.join(item, '**/*.css'));
+  const jsFolder = dist_js.map(item => path.join(item, '**/*.js'));
+
+  const sources = gulp.src([cssFolder, jsFolder].flat(), {read: false});
 
   gulp.src(dist_html)
     .pipe($.inject(sources, {
@@ -473,7 +498,8 @@ gulp.task('browser-sync', (done) => {
     },
     open: true,
     <%_ } else if (projectType === 'craft' || projectType === 'bedrock')  { -%>
-    proxy: '<%= siteUrl %>',
+    host: site_hostname,
+    proxy: site_hostname,
     open: false,
     <%_ } -%>
     port: 3000,
@@ -518,7 +544,7 @@ gulp.task('watch', (done) => {
   });
 
   <%_ if (projectType === 'html') { -%>
-  gulp.watch(src_asset_html, gulp.series('html', 'css', injectCssJss)).on('done', browserSync.reload);
+  gulp.watch(src_asset_html, gulp.series(html, 'css', injectCssJss)).on('done', browserSync.reload);
   <%_ } -%>
   <%_ if (includeTailwind) { -%>
   gulp.watch('tailwind.config.js', gulp.series('css'));
@@ -542,7 +568,7 @@ gulp.task('build',
     gulp.parallel(
       genericAssets,
       <%_ if (projectType === 'html') { -%>
-      'html',
+      html,
       <%_ } -%>
       'service-worker', 
       'images', 
@@ -551,10 +577,9 @@ gulp.task('build',
       'css', 
       'js', 
       'generate-favicon'
-    )<% if (projectType === 'html') { %>, 
+    ), 
     injectCssJss,
     'inject-favicon-markups'
-    <%_ } -%>
   )
 );
 
@@ -564,7 +589,7 @@ gulp.task('serve',
     gulp.parallel(
       genericAssets, 
       <%_ if (projectType === 'html') { -%>
-      'html',
+      html,
       <%_ } -%>
       'images',
       icons, 
@@ -572,9 +597,7 @@ gulp.task('serve',
       'css', 
       'js'
     ),
-    <%_ if (projectType === 'html') { -%>
     injectCssJss,
-    <%_ } -%>
     gulp.parallel(
       'browser-sync', 
       'watch'
@@ -603,7 +626,7 @@ gulp.task('critical', gulp.series('build', function (done) {
     // critical.generate returns a Promise.
     return critical.generate({
       base: dist_folder,
-      src: page.url,
+      src: process.env.PRIMARY_SITE_URL + page.url,
       css: isProd ? path.join(dist_css, 'styles.min.css') : path.join(dist_css, 'styles.css'),
       styleTarget: path.join(critical_css, page.key + '.css'),
       minify: true,

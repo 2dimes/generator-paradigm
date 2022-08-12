@@ -24,6 +24,10 @@ module.exports = {
   ],
   filesToRender: [
     {
+      input: '_env.ejs',
+      output: '.env',
+    },
+    {
       input: '_gitignore.ejs',
       output: '.gitignore',
     },
@@ -78,6 +82,20 @@ module.exports = {
       output: 'src/js/main.js',
     },
   ],
+  html: {
+    filesToCopy: [
+      {
+        input: 'html/.env.example',
+        output: '.env.example',
+      },
+    ],
+    filesToRender: (el) => [
+      {
+        input: 'html/_index.html.ejs',
+        output: 'src/index.html',
+      },
+    ],
+  },
   bedrock: {
     dirsToCreate: (el) => [
       `web/app/themes/${el.wordpressTemplateName}/static/`,
@@ -158,10 +176,6 @@ module.exports = {
         input: 'bedrock/web/app/themes/timber-starter',
         output: `web/app/themes/${el.wordpressTemplateName}`,
       },
-      {
-        input: '_env.ejs',
-        output: '.env',
-      },
     ],
   },
   craft: {
@@ -209,12 +223,6 @@ module.exports = {
       {
         input: 'craft/architect_base_fields.json',
         output: 'architect_base_fields.json',
-      },
-    ],
-    filesToRender: (el) => [
-      {
-        input: '_env.ejs',
-        output: '.env',
       },
     ],
   },

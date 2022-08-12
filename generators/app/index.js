@@ -285,6 +285,7 @@ module.exports = class extends Generator {
 
       // Manually deal with the response, get back and store the results.
       // we change a bit this way of doing to automatically do this in the self.prompt() method.
+      this.features = features;
       this.includeBootstrap = hasFeature('includeBootstrap');
       this.includeTailwind = hasFeature('includeTailwind');
       this.includeAlpine = hasFeature('includeAlpine');
@@ -293,8 +294,12 @@ module.exports = class extends Generator {
       this.includeSwiper = hasFeature('includeSwiper');
       this.includeFancybox = hasFeature('includeFancybox');
       this.includeGSAP = hasFeature('includeGSAP');
-      this.includeJQuery = answers.includeJQuery;
+      this.includeJQuery = hasFeature('includeBootstrap')
+        ? true
+        : answers.includeJQuery;
       this.projectName = answers.projectName;
+
+      this.log(`${chalk.green(this.features)}`);
     });
   }
 
@@ -319,6 +324,7 @@ module.exports = class extends Generator {
       dbName: this.dbName,
       dbUser: this.dbUser,
       dbPassword: this.dbPassword,
+      features: this.features,
       includeBootstrap: this.includeBootstrap,
       includeJQuery: this.includeJQuery,
       includeTailwind: this.includeTailwind,
@@ -350,37 +356,48 @@ module.exports = class extends Generator {
       );
     };
 
+    // ===================================================
+    // Create files based on answers
+    // ===================================================
     // Render Files
     config.filesToRender.forEach((file) => {
       copyTpl(file.input, file.output, templateData);
     });
+
+    // Render files specific to projectType
+    if (typeof config[this.projectType].filesToRender === 'function') {
+      config[this.projectType].filesToRender(this).forEach((file) => {
+        copyTpl(file.input, file.output, templateData);
+      });
+    }
 
     // Copy Files
     config.filesToCopy.forEach((file) => {
       copy(file.input, file.output);
     });
 
+    // Copy files specific to projectType
+    if (config[this.projectType].filesToCopy !== 'undefined') {
+      config[this.projectType].filesToCopy.forEach((file) => {
+        copy(file.input, file.output);
+      });
+    }
+
     // Create extra directories
     config.dirsToCreate.forEach((item) => {
       mkdirp(item);
     });
 
-    if (this.projectType === 'bedrock' || this.projectType === 'craft') {
+    // Create extra directories specific to projectType
+    if (config[this.projectType].dirsToCreate === 'function') {
       config[this.projectType].dirsToCreate(this).forEach((item) => {
         mkdirp(item);
       });
-
-      config[this.projectType].filesToCopy.forEach((file) => {
-        copy(file.input, file.output);
-      });
-
-      config[this.projectType].filesToRender(this).forEach((file) => {
-        copyTpl(file.input, file.output, templateData);
-      });
-    } else if (this.projectType === 'html') {
-      copyTpl('_index.html.ejs', 'src/index.html', templateData);
     }
 
+    // ===================================================
+    // Add npm packages based on project answers
+    // ===================================================
     if (this.includeBootstrap) {
       pkgJson.dependencies = {
         bootstrap: '^4.4.0',
@@ -406,7 +423,7 @@ module.exports = class extends Generator {
     }
 
     if (this.includeSwiper) {
-      pkgJson.dependencies.swiper = '^7.3.4';
+      pkgJson.dependencies.swiper = '^8.3.2';
 
       // Copy over sass files
       config.swiper.filesToCopy.forEach((file) => {
@@ -459,7 +476,7 @@ module.exports = class extends Generator {
         yosay('allo!\nJust gonna build the frontend files for the first time.')
       );
 
-      this.spawnCommandSync('npm', ['run', 'build:dev']);
+      this.spawnCommandSync('npm', ['run', 'build']);
     }
 
     if (this.projectType === 'html') {
@@ -468,6 +485,8 @@ module.exports = class extends Generator {
           `Thanks for using the Paradigm Starter Kit!\nTry running 'npm run serve' to check out your new fancy project!\nCheers 🍻!`
         )
       );
+
+      return;
     }
 
     if (this.projectType === 'craft') {

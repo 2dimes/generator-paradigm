@@ -11,6 +11,9 @@ DB_PASSWORD='<%= dbPassword %>'
 # DB_HOST='localhost'
 # DB_PREFIX='wp_'
 
+# The environment bedrock will run in (development, staging, production, etc.)
+# The string should correlate to a php file in /config/environments
+# If the file doesn't exists, bedrock fallsback to production settings.
 WP_ENV='development'
 WP_HOME='<%= siteUrl %>'
 WP_SITEURL="${WP_HOME}/wp"
@@ -79,6 +82,10 @@ RECAPTCHA_SECRET_KEY=
 
 # Google Maps API key
 GOOGLE_MAPS_API_KEY=
+<%_ }  else { -%>
+# The environment for the project (dev, staging, production, etc.)
+ENVIRONMENT=dev
+SITE_URL=localhost
 <%_ } -%>
-        
+
     

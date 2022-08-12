@@ -28,7 +28,7 @@
 <%_ if (projectType === 'bedrock') { -%>
 * Bedrocks by Roots - WordPress boilerplate with modern development tools [Documentation](https://roots.io/bedrock/)
 <%_ } else if (projectType === 'craft') { -%>
-* Craft CMS v3.5.10 - Craft is a flexible, user-friendly CMS for creating custom digital experiences on the web and beyond. [Documentation](https://craftcms.com/docs/3.x/)
+* Craft CMS v3.7.32 - Craft is a flexible, user-friendly CMS for creating custom digital experiences on the web and beyond. [Documentation](https://craftcms.com/docs/3.x/)
 <%_ } -%>
 * Gulp 4 - [Documentation](https://gulpjs.com/docs/en/getting-started/quick-start)
 * Sass Compiling (using gulp-dart-sass) - [Documentation](https://github.com/mattdsteele/gulp-dart-sass)
@@ -42,23 +42,42 @@
 * Minification of CSS and JS for production use (using [cssnano](https://github.com/cssnano/cssnano) and Webpack's built in optimization of ['production' mode](https://webpack.js.org/guides/production/#minification))
 * Favicon Generation (using gulp-real-favicon) - [Documentation](https://github.com/RealFaviconGenerator/gulp-real-favicon)
 
-<%_ if (includeAlpine || includeJQuery || includeTailwind || includeBootstrap) { -%>
+<%_ if ( features.length > 0 ) { -%>
 ## Frontend assets:
 <%_ } if (includeAlpine) { -%>
-* Alpine.js - [Documentation](https://github.com/alpinejs/alpine/tree/v2.8.2)
+* Alpine.js v3 - [Documentation](https://alpinejs.dev)
 <%_ } if (includeTailwind) { -%>
-* Tailwind CSS v2.0 - [Documentation](https://v2.tailwindcss.com/docs)
+* Tailwind CSS v3 - [Documentation](https://tailwindcss.com/docs)
 <%_ } if (includeLazyload) { -%>
-* Vanill Lazyload - [Documentation](https://github.com/verlok/vanilla-lazyload/tree/17.1.3)
+* Vanilla Lazyload - [Documentation](https://github.com/verlok/vanilla-lazyload/tree/17.1.3)
 <%_ } if (includeJQuery) { -%>
 * jQuery v3.4 - [Documentation](https://api.jquery.com/)
-<%_ } if (includeBootstrap) { -%> 
+<%_ } if (includeBootstrap) { -%>
 * Bootstrap 4.4.0 - [Documentation](https://getbootstrap.com/docs/4.4/getting-started/introduction/)
+<%_ } if (includeGSAP) { -%>
+* GSAP v3 - [Documentation](https://greensock.com/docs/v3/GSAP)
+<%_ } if (includeFlickity) { -%>
+* Flickity v2 - [Documentation](https://flickity.metafizzy.co/)
+<%_ } if (includeFancybox) { -%>
+* Fancybox v4 - [Documentation](https://fancyapps.com/docs/ui/fancybox/)
+<%_ } if (includeSwiper) { -%>
+* Swiper v8 - [Documentation](https://swiperjs.com/get-started)
 <%_ } -%>
+
 
 # Getting Started
 
 ---
+
+## Configuring enviroment
+Make sure .env variables are updated with the appropriate values. They are used for all frontend build commands. Below are the values used by the frontend build commands.
+
+### <% if (projectType === 'bedrock') { %>`WP_ENV`<% } else { %>`ENVIRONMENT`<% } %>
+Is used to set whether development or production version of files are generated. Expected values are `development`<% if (projectType === 'craft' || projectType === 'html') { %>, `dev`<% } %>, `staging`, or `production`.
+
+### <% if (projectType === 'bedrock') { %>`WP_HOME`<% } else if (projectType === 'craft') { %>`PRIMARY_SITE_URL`<% } else { %>`SITE_URL`<% } %>
+This is used for browsersync for setting the proxy hostname.
+
 
 <%_ if (projectType === 'craft') { -%>
 ## Install basic fields
@@ -133,8 +152,7 @@ Make sure in your `package.json` that `"purgeFiles": []` contains an array to an
 <%_ } -%> 
 
 ## Customizing Webpack
-### Entry points
-Set paths.webpack.entry in `package.json` to contain the entry points for your project. More about Webpack [entry points](https://v4.webpack.js.org/concepts/entry-points/).
+Set any custom configuration (e.g. new entry points or other settings) in `webpack.config.js`.
 
 ## Favicons
 Icons and `.webmanifest` are generated using `gulp-real-favicon`. Overwrite `src/favicon260x260.png` or change the variable `const favicon = path.join(src_folder, 'favicon260x260.png')` to point to the master image for generating the favicons. Master favicon image should be at least 260x260.
@@ -156,7 +174,7 @@ Change these variables in `package.json` to match your site's design:
 
 ---
 
-## `gulp serve`
+## `npm run serve`
 Probably the go-to command for development.
 
 This does the following:
@@ -188,15 +206,8 @@ and 'tailwind.config.js'
 
 and then it will re-run commands depending on what changed in order to compile sass, build webpack, or copy over file changes.
 
-## `npm run serve:dist`
-This is the production version of `gulp serve`. It creates the production version of CSS and Javascript files by:
-* Minifies CSS (cssnano) and JS (Webpack)
-* Omits source maps for CSS and JS
-<%_ if (includeTailwind) { -%>
-* Purges unused tailwindcss classes. Which helps to drastically reduce the file size.
-<%_ } -%>
 
-## `npm run critical-css:dist`
+## `npm run critical-css`
 Make sure `paths.criticalPages` in `package.json` contains an object of the pages you want to generate critical css for.
 ```json
 {
@@ -211,11 +222,8 @@ Make sure `paths.criticalPages` in `package.json` contains an object of the page
 ```
 After running the command, CSS that should be inlined can be found in <%_ if (projectType === 'bedrock') { %>`web/app/themes/<%= wordpressTemplateName %>/static/css/critical`<% } else if(projectType === 'craft') { %>`./templates/_includes/css/critical`<% } else { %>`dist/css/critical/`<% } %> folder.
 
-## `npm run build:dev`
-Builds out development version of frontend code.
-
 ## `npm run build`
-Builds out production version of frontend code.
+Builds out all frontend code.
 
 ## `gulp generate-favicon`
 This uses gulp-real-favicon to generate the favicons using a master favicon image (`src/favicon260x260.png` is the default one).
