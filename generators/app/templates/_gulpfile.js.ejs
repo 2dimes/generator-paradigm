@@ -627,7 +627,6 @@ gulp.task('critical', gulp.series('build', function (done) {
     return critical.generate({
       base: dist_folder,
       src: process.env.PRIMARY_SITE_URL + page.url,
-      css: isProd ? path.join(dist_css, 'styles.min.css') : path.join(dist_css, 'styles.css'),
       styleTarget: path.join(critical_css, page.key + '.css'),
       minify: true,
       dimension: [{
