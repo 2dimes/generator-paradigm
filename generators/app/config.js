@@ -221,8 +221,12 @@ module.exports = {
       },
       // JSON file for importing base fields using Architect plugin
       {
-        input: 'craft/architect_base_fields.json',
-        output: 'architect_base_fields.json',
+        input: 'craft/architect_base_fields_craft-v3.json',
+        output: 'architect_base_fields_craft-v3.json',
+      },
+      {
+        input: 'craft/architect_base_fields_craft-v4.json',
+        output: 'architect_base_fields_craft-v4.json',
       },
     ],
   },
