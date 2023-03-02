@@ -1,0 +1,54 @@
+{% block html_head_container %}
+
+{% include '_includes/_header.twig' %}
+    {% block head %}
+    {% endblock %}
+    </head>
+{% endblock %}
+
+    <body class="{{ body_class }}">
+
+        {% if options.google_tag_manager_id|trim %}
+            <!-- Google Tag Manager (noscript) -->
+            <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{- options.google_tag_manager_id -}}"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+            <!-- End Google Tag Manager (noscript) -->
+        {% endif %}
+
+        <a class="sr-only focus:not-sr-only" href="#main-content">{{ _e("Skip to main content") }}</a>
+
+        {# SVG symbols #}
+        <div style="display:none;">
+            {{ source("static/images/icons/symbol/svg/sprite.symbol.svg", ignore_missing = true) }}
+        </div>
+
+        <header>
+
+            {# Main navigation #}
+            {% include '_includes/_main-navigation.twig' %}
+
+            {% block header %}
+            {% endblock %}
+                
+        </header>
+
+        <main id="main-content" role="main">
+
+            {% block content %}
+                Sorry, no content
+            {% endblock %}
+
+        </main>
+
+        {% block footer %}
+            <footer>
+                {% include '_includes/_footer.twig' %}
+            </footer>
+            {{ function('wp_footer') }}
+        {% endblock %}
+
+        {% block footer_script %}
+        {% endblock %}
+
+    </body>
+</html>

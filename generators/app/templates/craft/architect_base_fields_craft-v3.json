@@ -1,0 +1,1066 @@
+{
+    "fieldGroups": [
+        "Globals",
+        "Uploads",
+        "Common"
+    ],
+    "volumes": [
+        {
+            "name": "Uploads",
+            "handle": "uploads",
+            "type": "craft\\volumes\\Local",
+            "hasUrls": true,
+            "url": "\/uploads",
+            "settings": {
+                "path": "@webroot\/uploads"
+            },
+            "fieldLayout": {
+                "Content": [
+                    "__ui_1",
+                    "altText"
+                ]
+            },
+            "fieldConfigs": {
+                "Content": {
+                    "__ui_1": {
+                        "type": "craft\\fieldlayoutelements\\AssetTitleField",
+                        "width": 100
+                    },
+                    "altText": {
+                        "label": "",
+                        "instructions": "",
+                        "width": 100
+                    }
+                }
+            }
+        },
+        {
+            "name": "Images",
+            "handle": "images",
+            "type": "craft\\volumes\\Local",
+            "hasUrls": true,
+            "url": "\/uploads\/images",
+            "settings": {
+                "path": "@webroot\/uploads\/images"
+            },
+            "fieldLayout": {
+                "Content": [
+                    "__ui_1",
+                    "altText"
+                ]
+            },
+            "fieldConfigs": {
+                "Content": {
+                    "__ui_1": {
+                        "type": "craft\\fieldlayoutelements\\AssetTitleField",
+                        "width": 100
+                    },
+                    "altText": {
+                        "width": 100
+                    }
+                }
+            }
+        }
+    ],
+    "fields": [
+        {
+            "group": "Globals",
+            "name": "Address",
+            "handle": "address",
+            "instructions": "",
+            "type": "barrelstrength\\sproutfields\\fields\\Address",
+            "defaultLanguage": "en",
+            "defaultCountry": "US",
+            "showCountryDropdown": "1",
+            "highlightCountries": []
+        },
+        {
+            "group": "Uploads",
+            "name": "Alt Text",
+            "handle": "altText",
+            "instructions": "",
+            "type": "craft\\fields\\PlainText",
+            "uiMode": "normal",
+            "code": "",
+            "multiline": "",
+            "initialRows": "4"
+        },
+        {
+            "group": "Globals",
+            "name": "Business Hours",
+            "handle": "businessHours",
+            "instructions": "",
+            "type": "craft\\fields\\Table",
+            "addRowLabel": "Add a day",
+            "maxRows": "",
+            "minRows": "",
+            "columns": {
+                "col1": {
+                    "heading": "Day (or day range)",
+                    "handle": "dayOrDayRange",
+                    "width": "",
+                    "type": "singleline"
+                },
+                "col2": {
+                    "heading": "Open",
+                    "handle": "open",
+                    "width": "",
+                    "type": "time"
+                },
+                "col3": {
+                    "heading": "Close",
+                    "handle": "close",
+                    "width": "",
+                    "type": "time"
+                }
+            },
+            "defaults": [
+                {
+                    "col1": ""
+                }
+            ],
+            "columnType": "text"
+        },
+        {
+            "group": "Globals",
+            "name": "Company's Legal Name",
+            "handle": "companysLegalName",
+            "instructions": "Awesome co. LLC",
+            "type": "craft\\fields\\PlainText",
+            "uiMode": "normal",
+            "code": "",
+            "multiline": "",
+            "initialRows": "4"
+        },
+        {
+            "group": "Globals",
+            "name": "Email",
+            "handle": "email",
+            "instructions": "",
+            "type": "craft\\fields\\Email",
+            "placeholder": "email@email.com"
+        },
+        {
+            "group": "Common",
+            "name": "Image 1",
+            "handle": "image1",
+            "instructions": "",
+            "type": "craft\\fields\\Assets",
+            "useSingleFolder": false,
+            "allowUploads": true,
+            "defaultUploadLocationSource": "volume:uploads",
+            "defaultUploadLocationSubpath": "",
+            "singleUploadLocationSource": "volume:uploads",
+            "singleUploadLocationSubpath": "",
+            "restrictFiles": "1",
+            "allowedKinds": [
+                "image"
+            ],
+            "showUnpermittedVolumes": false,
+            "showUnpermittedFiles": false,
+            "previewMode": "full",
+            "sources": "*",
+            "viewMode": "large",
+            "limit": "1",
+            "selectionLabel": "Add Image",
+            "showSiteMenu": true,
+            "localizeRelations": false,
+            "validateRelatedElements": true,
+            "allowSelfRelations": false
+        },
+        {
+            "group": "Common",
+            "name": "Image 2",
+            "handle": "image2",
+            "instructions": "",
+            "type": "craft\\fields\\Assets",
+            "useSingleFolder": false,
+            "allowUploads": true,
+            "defaultUploadLocationSource": "volume:uploads",
+            "defaultUploadLocationSubpath": "",
+            "singleUploadLocationSource": "volume:uploads",
+            "singleUploadLocationSubpath": "",
+            "restrictFiles": "1",
+            "allowedKinds": [
+                "image"
+            ],
+            "showUnpermittedVolumes": false,
+            "showUnpermittedFiles": false,
+            "previewMode": "full",
+            "sources": "*",
+            "viewMode": "large",
+            "limit": "1",
+            "selectionLabel": "Add Image",
+            "showSiteMenu": false,
+            "localizeRelations": false,
+            "validateRelatedElements": true,
+            "allowSelfRelations": false
+        },
+        {
+            "group": "Common",
+            "name": "Image 3",
+            "handle": "image3",
+            "instructions": "",
+            "type": "craft\\fields\\Assets",
+            "useSingleFolder": false,
+            "allowUploads": true,
+            "defaultUploadLocationSource": "volume:uploads",
+            "defaultUploadLocationSubpath": "",
+            "singleUploadLocationSource": "volume:uploads",
+            "singleUploadLocationSubpath": "",
+            "restrictFiles": "1",
+            "allowedKinds": [
+                "image"
+            ],
+            "showUnpermittedVolumes": false,
+            "showUnpermittedFiles": false,
+            "previewMode": "full",
+            "sources": "*",
+            "viewMode": "large",
+            "limit": "1",
+            "selectionLabel": "Add image",
+            "showSiteMenu": false,
+            "localizeRelations": false,
+            "validateRelatedElements": true,
+            "allowSelfRelations": false
+        },
+        {
+            "group": "Common",
+            "name": "Image 4",
+            "handle": "image4",
+            "instructions": "",
+            "type": "craft\\fields\\Assets",
+            "useSingleFolder": false,
+            "allowUploads": true,
+            "defaultUploadLocationSource": "volume:uploads",
+            "defaultUploadLocationSubpath": "",
+            "singleUploadLocationSource": "volume:uploads",
+            "singleUploadLocationSubpath": "",
+            "restrictFiles": "1",
+            "allowedKinds": [
+                "image"
+            ],
+            "showUnpermittedVolumes": false,
+            "showUnpermittedFiles": false,
+            "previewMode": "full",
+            "sources": "*",
+            "viewMode": "large",
+            "limit": "1",
+            "selectionLabel": "Add image",
+            "showSiteMenu": false,
+            "localizeRelations": false,
+            "validateRelatedElements": true,
+            "allowSelfRelations": false
+        },
+        {
+            "group": "Common",
+            "name": "Image 5",
+            "handle": "image5",
+            "instructions": "",
+            "type": "craft\\fields\\Assets",
+            "useSingleFolder": false,
+            "allowUploads": true,
+            "defaultUploadLocationSource": "volume:uploads",
+            "defaultUploadLocationSubpath": "",
+            "singleUploadLocationSource": "volume:uploads",
+            "singleUploadLocationSubpath": "",
+            "restrictFiles": "1",
+            "allowedKinds": [
+                "image"
+            ],
+            "showUnpermittedVolumes": false,
+            "showUnpermittedFiles": false,
+            "previewMode": "full",
+            "sources": "*",
+            "viewMode": "large",
+            "limit": "1",
+            "selectionLabel": "Add image",
+            "showSiteMenu": false,
+            "localizeRelations": false,
+            "validateRelatedElements": true,
+            "allowSelfRelations": false
+        },
+        {
+            "group": "Common",
+            "name": "Image Group 1",
+            "handle": "imageGroup1",
+            "instructions": "",
+            "type": "craft\\fields\\Assets",
+            "useSingleFolder": false,
+            "allowUploads": true,
+            "defaultUploadLocationSource": "volume:uploads",
+            "defaultUploadLocationSubpath": "",
+            "singleUploadLocationSource": "volume:uploads",
+            "singleUploadLocationSubpath": "",
+            "restrictFiles": "1",
+            "allowedKinds": [
+                "image"
+            ],
+            "showUnpermittedVolumes": false,
+            "showUnpermittedFiles": false,
+            "previewMode": "full",
+            "sources": "*",
+            "viewMode": "large",
+            "limit": "",
+            "selectionLabel": "Add images",
+            "showSiteMenu": false,
+            "localizeRelations": false,
+            "validateRelatedElements": true,
+            "allowSelfRelations": false
+        },
+        {
+            "group": "Common",
+            "name": "Image Group 2",
+            "handle": "imageGroup2",
+            "instructions": "",
+            "type": "craft\\fields\\Assets",
+            "useSingleFolder": false,
+            "allowUploads": true,
+            "defaultUploadLocationSource": "volume:uploads",
+            "defaultUploadLocationSubpath": "",
+            "singleUploadLocationSource": "volume:uploads",
+            "singleUploadLocationSubpath": "",
+            "restrictFiles": "1",
+            "allowedKinds": [
+                "image"
+            ],
+            "showUnpermittedVolumes": false,
+            "showUnpermittedFiles": false,
+            "previewMode": "full",
+            "sources": "*",
+            "viewMode": "large",
+            "limit": "",
+            "selectionLabel": "Add images",
+            "showSiteMenu": false,
+            "localizeRelations": false,
+            "validateRelatedElements": true,
+            "allowSelfRelations": false
+        },
+        {
+            "group": "Common",
+            "name": "Image Group 3",
+            "handle": "imageGroup3",
+            "instructions": "",
+            "type": "craft\\fields\\Assets",
+            "useSingleFolder": false,
+            "allowUploads": true,
+            "defaultUploadLocationSource": "volume:uploads",
+            "defaultUploadLocationSubpath": "",
+            "singleUploadLocationSource": "volume:uploads",
+            "singleUploadLocationSubpath": "",
+            "restrictFiles": "1",
+            "allowedKinds": [
+                "image"
+            ],
+            "showUnpermittedVolumes": false,
+            "showUnpermittedFiles": false,
+            "previewMode": "full",
+            "sources": "*",
+            "viewMode": "large",
+            "limit": "",
+            "selectionLabel": "Add images",
+            "showSiteMenu": false,
+            "localizeRelations": false,
+            "validateRelatedElements": true,
+            "allowSelfRelations": false
+        },
+        {
+            "group": "Common",
+            "name": "Link 1",
+            "handle": "link1",
+            "instructions": "",
+            "type": "typedlinkfield\\fields\\LinkField",
+            "allowCustomText": "1",
+            "allowedLinkNames": "*",
+            "allowTarget": "1",
+            "autoNoReferrer": "",
+            "defaultLinkName": "entry",
+            "defaultText": "Learn More",
+            "enableAriaLabel": "",
+            "enableTitle": "",
+            "typeSettings": {
+                "asset": {
+                    "sources": "*",
+                    "allowCustomQuery": ""
+                },
+                "category": {
+                    "sources": "*",
+                    "allowCustomQuery": ""
+                },
+                "entry": {
+                    "sources": "*",
+                    "allowCustomQuery": ""
+                },
+                "site": {
+                    "sites": "*"
+                },
+                "user": {
+                    "sources": "*",
+                    "allowCustomQuery": ""
+                },
+                "custom": {
+                    "disableValidation": "",
+                    "allowAliases": ""
+                },
+                "email": {
+                    "disableValidation": "",
+                    "allowAliases": ""
+                },
+                "tel": {
+                    "disableValidation": "",
+                    "allowAliases": ""
+                },
+                "url": {
+                    "disableValidation": "",
+                    "allowAliases": ""
+                }
+            }
+        },
+        {
+            "group": "Common",
+            "name": "Link 2",
+            "handle": "link2",
+            "instructions": "",
+            "type": "typedlinkfield\\fields\\LinkField",
+            "allowCustomText": "1",
+            "allowedLinkNames": "*",
+            "allowTarget": "1",
+            "autoNoReferrer": "",
+            "defaultLinkName": "entry",
+            "defaultText": "Learn More",
+            "enableAriaLabel": "",
+            "enableTitle": "",
+            "typeSettings": {
+                "asset": {
+                    "sources": "*",
+                    "allowCustomQuery": ""
+                },
+                "category": {
+                    "sources": "*",
+                    "allowCustomQuery": ""
+                },
+                "entry": {
+                    "sources": "*",
+                    "allowCustomQuery": ""
+                },
+                "site": {
+                    "sites": "*"
+                },
+                "user": {
+                    "sources": "*",
+                    "allowCustomQuery": ""
+                },
+                "custom": {
+                    "disableValidation": "",
+                    "allowAliases": ""
+                },
+                "email": {
+                    "disableValidation": "",
+                    "allowAliases": ""
+                },
+                "tel": {
+                    "disableValidation": "",
+                    "allowAliases": ""
+                },
+                "url": {
+                    "disableValidation": "",
+                    "allowAliases": ""
+                }
+            }
+        },
+        {
+            "group": "Common",
+            "name": "Link 3",
+            "handle": "link3",
+            "instructions": "",
+            "type": "typedlinkfield\\fields\\LinkField",
+            "allowCustomText": "1",
+            "allowedLinkNames": "*",
+            "allowTarget": "1",
+            "autoNoReferrer": "",
+            "defaultLinkName": "entry",
+            "defaultText": "Learn More",
+            "enableAriaLabel": "",
+            "enableTitle": "",
+            "typeSettings": {
+                "asset": {
+                    "sources": "*",
+                    "allowCustomQuery": ""
+                },
+                "category": {
+                    "sources": "*",
+                    "allowCustomQuery": ""
+                },
+                "entry": {
+                    "sources": "*",
+                    "allowCustomQuery": ""
+                },
+                "site": {
+                    "sites": "*"
+                },
+                "user": {
+                    "sources": "*",
+                    "allowCustomQuery": ""
+                },
+                "custom": {
+                    "disableValidation": "",
+                    "allowAliases": ""
+                },
+                "email": {
+                    "disableValidation": "",
+                    "allowAliases": ""
+                },
+                "tel": {
+                    "disableValidation": "",
+                    "allowAliases": ""
+                },
+                "url": {
+                    "disableValidation": "",
+                    "allowAliases": ""
+                }
+            }
+        },
+        {
+            "group": "Common",
+            "name": "Link 4",
+            "handle": "link4",
+            "instructions": "",
+            "type": "typedlinkfield\\fields\\LinkField",
+            "allowCustomText": "1",
+            "allowedLinkNames": "*",
+            "allowTarget": "1",
+            "autoNoReferrer": "",
+            "defaultLinkName": "entry",
+            "defaultText": "Learn More",
+            "enableAriaLabel": "",
+            "enableTitle": "",
+            "typeSettings": {
+                "asset": {
+                    "sources": "*",
+                    "allowCustomQuery": ""
+                },
+                "category": {
+                    "sources": "*",
+                    "allowCustomQuery": ""
+                },
+                "entry": {
+                    "sources": "*",
+                    "allowCustomQuery": ""
+                },
+                "site": {
+                    "sites": "*"
+                },
+                "user": {
+                    "sources": "*",
+                    "allowCustomQuery": ""
+                },
+                "custom": {
+                    "disableValidation": "",
+                    "allowAliases": ""
+                },
+                "email": {
+                    "disableValidation": "",
+                    "allowAliases": ""
+                },
+                "tel": {
+                    "disableValidation": "",
+                    "allowAliases": ""
+                },
+                "url": {
+                    "disableValidation": "",
+                    "allowAliases": ""
+                }
+            }
+        },
+        {
+            "group": "Common",
+            "name": "Link 5",
+            "handle": "link5",
+            "instructions": "",
+            "type": "typedlinkfield\\fields\\LinkField",
+            "allowCustomText": "1",
+            "allowedLinkNames": "*",
+            "allowTarget": "1",
+            "autoNoReferrer": "",
+            "defaultLinkName": "entry",
+            "defaultText": "Learn More",
+            "enableAriaLabel": "",
+            "enableTitle": "",
+            "typeSettings": {
+                "asset": {
+                    "sources": "*",
+                    "allowCustomQuery": ""
+                },
+                "category": {
+                    "sources": "*",
+                    "allowCustomQuery": ""
+                },
+                "entry": {
+                    "sources": "*",
+                    "allowCustomQuery": ""
+                },
+                "site": {
+                    "sites": "*"
+                },
+                "user": {
+                    "sources": "*",
+                    "allowCustomQuery": ""
+                },
+                "custom": {
+                    "disableValidation": "",
+                    "allowAliases": ""
+                },
+                "email": {
+                    "disableValidation": "",
+                    "allowAliases": ""
+                },
+                "tel": {
+                    "disableValidation": "",
+                    "allowAliases": ""
+                },
+                "url": {
+                    "disableValidation": "",
+                    "allowAliases": ""
+                }
+            }
+        },
+        {
+            "group": "Common",
+            "name": "Multi-line Text 1",
+            "handle": "multiLineText1",
+            "instructions": "",
+            "type": "craft\\fields\\PlainText",
+            "uiMode": "normal",
+            "code": "",
+            "multiline": "1",
+            "initialRows": "4"
+        },
+        {
+            "group": "Common",
+            "name": "Multi-line Text 2",
+            "handle": "multiLineText2",
+            "instructions": "",
+            "type": "craft\\fields\\PlainText",
+            "uiMode": "normal",
+            "code": "",
+            "multiline": "1",
+            "initialRows": "4"
+        },
+        {
+            "group": "Common",
+            "name": "Multi-line Text 3",
+            "handle": "multiLineText3",
+            "instructions": "",
+            "type": "craft\\fields\\PlainText",
+            "uiMode": "normal",
+            "code": "",
+            "multiline": "1",
+            "initialRows": "4"
+        },
+        {
+            "group": "Common",
+            "name": "Multi-line Text 4",
+            "handle": "multiLineText4",
+            "instructions": "",
+            "type": "craft\\fields\\PlainText",
+            "uiMode": "normal",
+            "code": "",
+            "multiline": "1",
+            "initialRows": "4"
+        },
+        {
+            "group": "Common",
+            "name": "Multi-line Text 5",
+            "handle": "multiLineText5",
+            "instructions": "",
+            "type": "craft\\fields\\PlainText",
+            "uiMode": "normal",
+            "code": "",
+            "multiline": "1",
+            "initialRows": "4"
+        },
+        {
+            "group": "Globals",
+            "name": "Phone Number",
+            "handle": "phoneNumber",
+            "instructions": "",
+            "type": "barrelstrength\\sproutfields\\fields\\Phone",
+            "customPatternErrorMessage": "",
+            "limitToSingleCountry": "",
+            "country": "US",
+            "placeholder": "901-555-555"
+        },
+        {
+            "group": "Globals",
+            "name": "Privacy Policy Link",
+            "handle": "privacyPolicyLink",
+            "instructions": "",
+            "type": "typedlinkfield\\fields\\LinkField",
+            "allowCustomText": "",
+            "allowedLinkNames": {
+                "3": "entry",
+                "9": "url"
+            },
+            "allowTarget": "1",
+            "autoNoReferrer": "",
+            "defaultLinkName": "entry",
+            "defaultText": "",
+            "enableAriaLabel": "",
+            "enableTitle": "",
+            "typeSettings": {
+                "asset": {
+                    "sources": "*",
+                    "allowCustomQuery": ""
+                },
+                "category": {
+                    "sources": "*",
+                    "allowCustomQuery": ""
+                },
+                "entry": {
+                    "sources": "*",
+                    "allowCustomQuery": ""
+                },
+                "site": {
+                    "sites": "*"
+                },
+                "user": {
+                    "sources": "*",
+                    "allowCustomQuery": ""
+                },
+                "custom": {
+                    "disableValidation": "",
+                    "allowAliases": ""
+                },
+                "email": {
+                    "disableValidation": "",
+                    "allowAliases": ""
+                },
+                "tel": {
+                    "disableValidation": "",
+                    "allowAliases": ""
+                },
+                "url": {
+                    "disableValidation": "",
+                    "allowAliases": ""
+                }
+            }
+        },
+        {
+            "group": "Common",
+            "name": "Rich text 1",
+            "handle": "richText1",
+            "instructions": "",
+            "type": "craft\\redactor\\Field",
+            "uiMode": "normal",
+            "redactorConfig": "",
+            "purifierConfig": "",
+            "cleanupHtml": true,
+            "removeInlineStyles": "1",
+            "removeEmptyTags": "1",
+            "removeNbsp": "1",
+            "purifyHtml": "1",
+            "columnType": "text",
+            "availableVolumes": "*",
+            "availableTransforms": "*",
+            "showUnpermittedVolumes": false,
+            "showUnpermittedFiles": false,
+            "showHtmlButtonForNonAdmins": "",
+            "configSelectionMode": "choose",
+            "manualConfig": "",
+            "defaultTransform": ""
+        },
+        {
+            "group": "Common",
+            "name": "Rich text 2",
+            "handle": "richText2",
+            "instructions": "",
+            "type": "craft\\redactor\\Field",
+            "uiMode": "normal",
+            "redactorConfig": "",
+            "purifierConfig": "",
+            "cleanupHtml": true,
+            "removeInlineStyles": "1",
+            "removeEmptyTags": "1",
+            "removeNbsp": "1",
+            "purifyHtml": "1",
+            "columnType": "text",
+            "availableVolumes": "*",
+            "availableTransforms": "*",
+            "showUnpermittedVolumes": false,
+            "showUnpermittedFiles": false,
+            "showHtmlButtonForNonAdmins": "",
+            "configSelectionMode": "choose",
+            "manualConfig": "",
+            "defaultTransform": ""
+        },
+        {
+            "group": "Common",
+            "name": "Rich text 3",
+            "handle": "richText3",
+            "instructions": "",
+            "type": "craft\\redactor\\Field",
+            "uiMode": "normal",
+            "redactorConfig": "",
+            "purifierConfig": "",
+            "cleanupHtml": true,
+            "removeInlineStyles": "1",
+            "removeEmptyTags": "1",
+            "removeNbsp": "1",
+            "purifyHtml": "1",
+            "columnType": "text",
+            "availableVolumes": "*",
+            "availableTransforms": "*",
+            "showUnpermittedVolumes": false,
+            "showUnpermittedFiles": false,
+            "showHtmlButtonForNonAdmins": "",
+            "configSelectionMode": "choose",
+            "manualConfig": "",
+            "defaultTransform": ""
+        },
+        {
+            "group": "Common",
+            "name": "Rich text 4",
+            "handle": "richText4",
+            "instructions": "",
+            "type": "craft\\redactor\\Field",
+            "uiMode": "normal",
+            "redactorConfig": "",
+            "purifierConfig": "",
+            "cleanupHtml": true,
+            "removeInlineStyles": "1",
+            "removeEmptyTags": "1",
+            "removeNbsp": "1",
+            "purifyHtml": "1",
+            "columnType": "text",
+            "availableVolumes": "*",
+            "availableTransforms": "*",
+            "showUnpermittedVolumes": false,
+            "showUnpermittedFiles": false,
+            "showHtmlButtonForNonAdmins": "",
+            "configSelectionMode": "choose",
+            "manualConfig": "",
+            "defaultTransform": ""
+        },
+        {
+            "group": "Common",
+            "name": "Rich text 5",
+            "handle": "richText5",
+            "instructions": "",
+            "type": "craft\\redactor\\Field",
+            "uiMode": "normal",
+            "redactorConfig": "",
+            "purifierConfig": "",
+            "cleanupHtml": true,
+            "removeInlineStyles": "1",
+            "removeEmptyTags": "1",
+            "removeNbsp": "1",
+            "purifyHtml": "1",
+            "columnType": "text",
+            "availableVolumes": "*",
+            "availableTransforms": "*",
+            "showUnpermittedVolumes": false,
+            "showUnpermittedFiles": false,
+            "showHtmlButtonForNonAdmins": "",
+            "configSelectionMode": "choose",
+            "manualConfig": "",
+            "defaultTransform": ""
+        },
+        {
+            "group": "Common",
+            "name": "SEO",
+            "handle": "seo",
+            "instructions": "",
+            "type": "nystudio107\\seomatic\\fields\\SeoSettings",
+            "elementDisplayPreviewType": "google",
+            "generalTabEnabled": "1",
+            "generalEnabledFields": [
+                "seoPreview",
+                "seoTitle",
+                "seoDescription",
+                "seoImage"
+            ],
+            "twitterTabEnabled": "1",
+            "twitterEnabledFields": [],
+            "facebookTabEnabled": "1",
+            "facebookEnabledFields": [],
+            "sitemapTabEnabled": "",
+            "sitemapEnabledFields": []
+        },
+        {
+            "group": "Common",
+            "name": "Single-line Text 1",
+            "handle": "singleLineText1",
+            "instructions": "",
+            "type": "craft\\fields\\PlainText",
+            "uiMode": "enlarged",
+            "code": "",
+            "multiline": "",
+            "initialRows": "4"
+        },
+        {
+            "group": "Common",
+            "name": "Single-line Text 2",
+            "handle": "singleLineText2",
+            "instructions": "",
+            "type": "craft\\fields\\PlainText",
+            "uiMode": "enlarged",
+            "code": "",
+            "multiline": "",
+            "initialRows": "4"
+        },
+        {
+            "group": "Common",
+            "name": "Single-line Text 3",
+            "handle": "singleLineText3",
+            "instructions": "",
+            "type": "craft\\fields\\PlainText",
+            "uiMode": "enlarged",
+            "code": "",
+            "multiline": "",
+            "initialRows": "4"
+        },
+        {
+            "group": "Common",
+            "name": "Single-line Text 4",
+            "handle": "singleLineText4",
+            "instructions": "",
+            "type": "craft\\fields\\PlainText",
+            "uiMode": "enlarged",
+            "code": "",
+            "multiline": "",
+            "initialRows": "4"
+        },
+        {
+            "group": "Common",
+            "name": "Single-line Text 5",
+            "handle": "singleLineText5",
+            "instructions": "",
+            "type": "craft\\fields\\PlainText",
+            "uiMode": "enlarged",
+            "code": "",
+            "multiline": "",
+            "initialRows": "4"
+        }
+    ],
+    "globalSets": [
+        {
+            "name": "Company Information",
+            "handle": "companyInformation",
+            "fieldLayout": {
+                "Company Information": [
+                    "companysLegalName",
+                    "address",
+                    "businessHours",
+                    "phoneNumber",
+                    "email",
+                    "privacyPolicyLink"
+                ]
+            },
+            "fieldConfigs": {
+                "Company Information": {
+                    "companysLegalName": {
+                        "label": "",
+                        "instructions": "",
+                        "width": 100
+                    },
+                    "address": {
+                        "label": "",
+                        "instructions": "",
+                        "width": 100
+                    },
+                    "businessHours": {
+                        "label": "",
+                        "instructions": "",
+                        "width": 100
+                    },
+                    "phoneNumber": {
+                        "label": "",
+                        "instructions": "",
+                        "width": 100
+                    },
+                    "email": {
+                        "label": "",
+                        "instructions": "",
+                        "width": 100
+                    },
+                    "privacyPolicyLink": {
+                        "label": "",
+                        "instructions": "",
+                        "width": 100
+                    }
+                }
+            }
+        }
+    ],
+    "userGroups": [
+        {
+            "name": "Content Editor",
+            "handle": "contentEditor",
+            "permissions": [
+                "accesscp",
+                "accessplugin-seomatic",
+                "accesssitewhensystemisoff",
+                "assignusergroups",
+                "assignuserpermissions",
+                "createfoldersinvolume:uploads",
+                "createfoldersinvolume:images",
+                "deletefilesandfoldersinvolume:uploads",
+                "deletefilesandfoldersinvolume:images",
+                "deletepeerfilesinvolume:35ecd86f-e03f-4a5b-93d9-d5d8a409c4c0",
+                "deletepeerfilesinvolume:a305bd56-e6ec-4c6e-acd0-c0a7ae28c9a5",
+                "editglobalset:companyInformation",
+                "editimagesinvolume:35ecd86f-e03f-4a5b-93d9-d5d8a409c4c0",
+                "editimagesinvolume:a305bd56-e6ec-4c6e-acd0-c0a7ae28c9a5",
+                "editpeerfilesinvolume:35ecd86f-e03f-4a5b-93d9-d5d8a409c4c0",
+                "editpeerfilesinvolume:a305bd56-e6ec-4c6e-acd0-c0a7ae28c9a5",
+                "editpeerimagesinvolume:35ecd86f-e03f-4a5b-93d9-d5d8a409c4c0",
+                "editpeerimagesinvolume:a305bd56-e6ec-4c6e-acd0-c0a7ae28c9a5",
+                "editusers",
+                "moderateusers",
+                "registerusers",
+                "replacefilesinvolume:35ecd86f-e03f-4a5b-93d9-d5d8a409c4c0",
+                "replacefilesinvolume:a305bd56-e6ec-4c6e-acd0-c0a7ae28c9a5",
+                "replacepeerfilesinvolume:35ecd86f-e03f-4a5b-93d9-d5d8a409c4c0",
+                "replacepeerfilesinvolume:a305bd56-e6ec-4c6e-acd0-c0a7ae28c9a5",
+                "saveassetinvolume:uploads",
+                "saveassetinvolume:images",
+                "seomatic:content-meta",
+                "seomatic:content-meta:facebook",
+                "seomatic:content-meta:general",
+                "seomatic:content-meta:sitemap",
+                "seomatic:content-meta:twitter",
+                "seomatic:dashboard",
+                "seomatic:global-meta",
+                "seomatic:global-meta:ads",
+                "seomatic:global-meta:facebook",
+                "seomatic:global-meta:general",
+                "seomatic:global-meta:humans",
+                "seomatic:global-meta:robots",
+                "seomatic:global-meta:security",
+                "seomatic:global-meta:twitter",
+                "seomatic:plugin-settings",
+                "seomatic:site-settings",
+                "seomatic:site-settings:creator",
+                "seomatic:site-settings:identity",
+                "seomatic:site-settings:miscellaneous",
+                "seomatic:site-settings:sitemap",
+                "seomatic:site-settings:social",
+                "seomatic:tracking-scripts",
+                "seomatic:tracking-scripts:facebookpixel",
+                "seomatic:tracking-scripts:fathom",
+                "seomatic:tracking-scripts:googleanalytics",
+                "seomatic:tracking-scripts:googletagmanager",
+                "seomatic:tracking-scripts:gtag",
+                "seomatic:tracking-scripts:hubspot",
+                "seomatic:tracking-scripts:linkedininsight",
+                "seomatic:tracking-scripts:matomo",
+                "seomatic:tracking-scripts:pinteresttag",
+                "seomatic:tracking-scripts:plausible",
+                "viewpeerfilesinvolume:35ecd86f-e03f-4a5b-93d9-d5d8a409c4c0",
+                "viewpeerfilesinvolume:a305bd56-e6ec-4c6e-acd0-c0a7ae28c9a5",
+                "viewvolume:uploads",
+                "viewvolume:images"
+            ]
+        }
+    ]
+}

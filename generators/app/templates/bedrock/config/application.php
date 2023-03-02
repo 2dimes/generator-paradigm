@@ -132,3 +132,9 @@ Config::apply();
 if (!defined('ABSPATH')) {
     define('ABSPATH', $webroot_dir . '/wp/');
 }
+
+
+/**
+ * Custom environemtn Variables
+ */
+define('ASSET_VERSION', env('ASSET_VERSION') ?: null);

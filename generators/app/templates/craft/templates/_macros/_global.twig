@@ -1,0 +1,82 @@
+{% macro isActive(segment) %}{% if craft.app.request.pathInfo == segment %}border-b-2 border-secondary{% endif %}{% endmacro %}
+
+{#
+    Renders Alt Text for images
+    Alt Text field then Caption field then defaults to Title
+#}
+{% macro altText(fieldName) %}
+    alt="{{ fieldName.altText ??? fieldName.caption ??? fieldName.title }}"
+{% endmacro %}
+
+{#
+    Adds tailwind classes using mmikkel/retcon plugin to basic rich text elements so they can be styled.
+#}
+{% macro richTextRetcon(fieldName) %}
+    {{ fieldName | retcon([
+                        ['attr', 'h2', { class: 'font-heading leading-none font-bold text-2 lg:text-2p4 mb-1'}],
+                        ['attr', 'h3', { class: 'font-heading leading-none font-bold text-1p2 lg:text-1p6 mb-1'}],
+                        ['attr', 'p', { class: 'leading-relaxed mb-2'}],
+                        ['attr', 'ul', { class: 'list-disc pl-2 my-2'}],
+                        ['attr', 'ul ul, ol ul', { class: 'list-circle pl-2 mt-1'}],
+                        ['attr', 'ul li, ol li', { class: 'mb-1'}],
+                        ['attr', 'ol', { class: 'list-decimal pl-2 my-2'}],
+                        ['attr', 'ol ol, ul ol', { class: 'list-lower-roman pl-2 mt-1'}],
+                        ['attr', 'a', { class: 'text-primary-200 underline hover:no-underline'}]
+                    ]) }}
+{% endmacro %}
+
+
+{# 
+    Responsive image snippet with help from image optimize plugin.
+#}
+{% macro responsiveImage(image, imageOptimize = null, sizes = "100vw", lazyLoad = false, attr = { class: [] } ) %}
+
+    {% if not attr.class is defined %}
+        {% set attr = attr|merge({ class: [] }) %}
+    {% endif %}
+
+    {% if lazyLoad %}
+        {% set attr = attr|merge({ class: attr.class|merge(['lazy']) }) %}
+    {% endif %}
+
+    {% if imageOptimize %}
+        <picture>
+            <source {% if lazyLoad %}
+                data-sizes="{{ sizes }}"
+                data-srcset="{{ imageOptimize.srcsetWebp() }}"
+                {% else %}
+                    sizes="{{ sizes }}"
+                    srcset="{{ imageOptimize.srcsetWebp() }}"
+                {% endif %}
+                type="image/webp">
+
+            <img  {{ attr(attr) }}
+                {% if lazyLoad %}
+                    src="{{ imageOptimize.placeholderImage() }}"
+                    data-src="{{ imageOptimize.src() }}"
+                    data-srcset="{{ imageOptimize.srcset() }}"
+                    data-sizes="{{ sizes }}"
+                {% else %}
+                    src="{{ imageOptimize.src() }}"
+                    srcset="{{ imageOptimize.srcset() }}"
+                    sizes="{{ sizes }}"
+                {% endif %}
+                width="{{ imageOptimize.maxSrcsetWidth() }}"
+                height="{{ imageOptimize.variantHeights[imageOptimize.maxSrcsetWidth()] }}" 
+                {{ _self.altText(image) }}>
+        </picture>
+    {% else %}
+        <img  {{ attr(attr) }}
+            {% if lazyLoad %}
+                data-src="{{ image.url }}"
+                data-sizes="{{ sizes }}"
+            {% else %}
+                src="{{ image.url }}"
+                sizes="{{ sizes }}"
+            {% endif %}
+                width="{{ image.width }}"
+                height="{{ image.height }}" 
+                {{ _self.altText(image) }}>
+    {% endif %}
+
+{% endmacro %}

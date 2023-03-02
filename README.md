@@ -1,9 +1,16 @@
 # Paradigm Website Project Generator
-> A yeoman generator for web development projects at [Paradigm Marketing & Creative](https://2dimes.com) in Memphis, TN. 
+> A yeoman generator for web development projects at [Paradigm Marketing & Creative](https://2dimes.com) in Memphis, TN.
+> 
 > ![Paradigm Marketing & Creative](https://raw.githubusercontent.com/2dimes/generator-paradigm/master/paradigm-logo.svg)
-> Includes a Gulp workflow that uses sass, Webpack, babel.js, image minification, and browsersync. Project type options available for static html, [roots/bedrock](https://roots.io/bedrock/), or [Craft CMS](https://craftcms.com/docs/3.x/).
+>
+> Includes a Gulp workflow that uses sass, Webpack, babel.js, image minification, and browsersync. 
+> Project types available:
+> 1. Static html
+> 2. [roots/bedrock](https://roots.io/bedrock/)
+> 3. [Craft CMS](https://craftcms.com/docs/3.x/)
 
-[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]
+[![NPM version][npm-image]][npm-url]
+
 
 ## Installation
 

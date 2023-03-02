@@ -24,6 +24,10 @@ module.exports = {
   ],
   filesToRender: [
     {
+      input: '_env.ejs',
+      output: '.env',
+    },
+    {
       input: '_gitignore.ejs',
       output: '.gitignore',
     },
@@ -36,8 +40,16 @@ module.exports = {
       output: 'gulpfile.js',
     },
     {
-      input: '_webpack.config.js.ejs',
-      output: 'webpack.config.js',
+      input: '_webpack.common.js.ejs',
+      output: 'webpack.common.js',
+    },
+    {
+      input: '_webpack.dev.js',
+      output: 'webpack.dev.js',
+    },
+    {
+      input: '_webpack.prod.js',
+      output: 'webpack.prod.js',
     },
     {
       input: '_package.json.ejs',
@@ -78,9 +90,24 @@ module.exports = {
       output: 'src/js/main.js',
     },
   ],
+  html: {
+    filesToCopy: [
+      {
+        input: 'html/.env.example',
+        output: '.env.example',
+      },
+    ],
+    filesToRender: (el) => [
+      {
+        input: 'html/_index.html.ejs',
+        output: 'src/index.html',
+      },
+    ],
+  },
   bedrock: {
     dirsToCreate: (el) => [
       `web/app/themes/${el.wordpressTemplateName}/static/`,
+      'src/images/icons',
     ],
     filesToCopy: [
       {
@@ -157,10 +184,6 @@ module.exports = {
         input: 'bedrock/web/app/themes/timber-starter',
         output: `web/app/themes/${el.wordpressTemplateName}`,
       },
-      {
-        input: '_env.ejs',
-        output: '.env',
-      },
     ],
   },
   craft: {
@@ -204,11 +227,14 @@ module.exports = {
         input: 'craft/web',
         output: 'web',
       },
-    ],
-    filesToRender: (el) => [
+      // JSON file for importing base fields using Architect plugin
       {
-        input: '_env.ejs',
-        output: '.env',
+        input: 'craft/architect_base_fields_craft-v3.json',
+        output: 'architect_base_fields_craft-v3.json',
+      },
+      {
+        input: 'craft/architect_base_fields_craft-v4.json',
+        output: 'architect_base_fields_craft-v4.json',
       },
     ],
   },
@@ -217,6 +243,14 @@ module.exports = {
       {
         input: 'src/scss/vendor/fancybox4',
         output: 'src/scss/vendor/fancybox4',
+      },
+    ],
+  },
+  swiper: {
+    filesToCopy: [
+      {
+        input: 'src/scss/vendor/swiper',
+        output: 'src/scss/vendor/swiper',
       },
     ],
   },
