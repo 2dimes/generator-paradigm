@@ -361,7 +361,7 @@ function lintJs(done) {
 function webpackJs() {
   return gulp.src(src_asset_js, { since: gulp.lastRun(webpackJs) })
     .pipe($.plumber())
-    .pipe(webpackStream(require('./webpack.config.js'), webpack ))
+    .pipe(webpackStream(isProd ? require('./webpack.prod.js') : require('./webpack.dev.js'), webpack ))
     .pipe(gulp.dest(dist_js));
 }
 
@@ -453,7 +453,11 @@ gulp.task('generate-favicon', function(done) {
       scalingAlgorithm: 'Mitchell',
       errorOnImageTooSmall: false,
       readmeFile: false,
+      <%_ if (projectType === 'craft') { -%>
+      htmlCodeFile: false,
+      <%_ } else { -%>
       htmlCodeFile: true,
+      <%_ } -%>
       usePathAsIs: false
     },
     markupFile: FAVICON_DATA_FILE
@@ -468,9 +472,9 @@ gulp.task('generate-favicon', function(done) {
 // this task whenever you modify a page. You can keep this task
 // as is or refactor your existing HTML pipeline.
 gulp.task('inject-favicon-markups', function() {
-  return gulp.src(dist_html)
+  return gulp.src(<%_ if (projectType === 'craft') { -%>['./templates/_layout/_main.{twig.html}'], { base: './templates' }<%_ } else { -%>dist_html<%_ } -%>)
     .pipe($.realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(FAVICON_DATA_FILE)).favicon.html_code))
-    .pipe(gulp.dest(dist_folder));
+    .pipe(gulp.dest(<%_ if (projectType === 'craft') { -%>'./templates'<%_ } else { -%>dist_folder<%_ } -%>));
 });
 
 
@@ -498,7 +502,6 @@ gulp.task('browser-sync', (done) => {
     },
     open: true,
     <%_ } else if (projectType === 'craft' || projectType === 'bedrock')  { -%>
-    host: site_hostname,
     proxy: site_hostname,
     open: false,
     <%_ } -%>
@@ -550,7 +553,7 @@ gulp.task('watch', (done) => {
   gulp.watch('tailwind.config.js', gulp.series('css'));
   <%_ } -%>
   gulp.watch(src_asset_scss, gulp.series('css'));
-  gulp.watch(src_asset_js, gulp.series('js', reloadAndDone));
+  gulp.watch(src_asset_js, gulp.series(gulp.parallel('css', 'js'), reloadAndDone));
   gulp.watch(src_asset_img, gulp.series('images', reloadAndDone));
   gulp.watch(pkg.globs.src.icons, gulp.series(icons, reloadAndDone));
   gulp.watch(src_asset_font, gulp.series('fonts', reloadAndDone));
@@ -575,11 +578,9 @@ gulp.task('build',
       icons,
       fonts, 
       'css', 
-      'js', 
-      'generate-favicon'
+      'js'
     ), 
-    injectCssJss,
-    'inject-favicon-markups'
+    injectCssJss
   )
 );
 
@@ -597,7 +598,9 @@ gulp.task('serve',
       'css', 
       'js'
     ),
+    <%_ if (projectType === 'html') { -%>
     injectCssJss,
+    <%_ } -%>
     gulp.parallel(
       'browser-sync', 
       'watch'

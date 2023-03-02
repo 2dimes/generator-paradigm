@@ -441,7 +441,7 @@ module.exports = class extends Generator {
     }
 
     if (this.includeGSAP) {
-      pkgJson.dependencies.gsap = '^3.7.1';
+      pkgJson.dependencies.gsap = 'npm:@gsap/shockingly@^3.11.4';
     }
 
     if (this.includeTailwind) {

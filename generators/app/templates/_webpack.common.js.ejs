@@ -1,15 +1,7 @@
-// Test if NODE_ENV production
-const isProd = process.env.NODE_ENV === 'production';
-
 module.exports = {
-    mode: isProd ? 'production' : 'development',
     entry: {
-        main: './src/js/main.js'
+        main: './src/js/main.js',
     },
-    output: {
-        filename: isProd ? '[name].min.js' : '[name].js'
-    },
-    devtool: isProd ? false : 'cheap-source-map',
     module: {
         rules: [
             { 
@@ -35,16 +27,5 @@ module.exports = {
             }
           <%_ } %>
         ]
-    },
-    optimization: {
-        chunkIds: 'named',
-        splitChunks: {
-            chunks: 'all',
-            name(module, chunks, cacheGroupKey) {
-                const allChunksNames = chunks.map((item) => item.name).join('~');
-                return `${cacheGroupKey}-${allChunksNames}`;
-            },
-            filename: isProd ? '[name].min.js' : '[name].js',
-        }
     }
-};
+}
