@@ -1,33 +1,41 @@
 <%_ if (includeJQuery || includeBootstrap) { -%>
 import $ from 'jquery';
-<%_ } -%>
 
+<%_ } -%>
 <%_ if (includeBootstrap) { -%>
 import 'popper.js';
 import 'bootstrap';
-<%_ } -%>
 
+<%_ } -%>
 <%_ if (includeAlpine) { -%>
 // Alpine.js
-import 'alpinejs';
-<%_ } -%>
+import Alpine from 'alpinejs';
+global.Alpine = Alpine;
 
+// Import or define any Alpine components here
+
+Alpine.start();
+
+<%_ } -%>
 <%_ if (includeFlickity) { -%>
 // Flickity.js
 import Flickity from "flickity";
-<%_ } -%>
 
+<%_ } -%>
+<%_ if (includeSwiper) { -%>
+import Swiper from 'swiper';
+
+<%_ } -%>
 <%_ if (includeLazyload) { -%>
 // Lazy load images
 import Lazyload from 'vanilla-lazyload';
-<%_ } -%>
 
-<%_ if (includeLazyload) { -%>
 // Create Lazy load instance
 var lazyLoadInstance = new Lazyload({
     elements_selector: '.lazy'
     // ... more custom settings?
 });
+
 <%_ } -%>
 
 console.log('Hello World 😎');

@@ -11,6 +11,9 @@ DB_PASSWORD='<%= dbPassword %>'
 # DB_HOST='localhost'
 # DB_PREFIX='wp_'
 
+# The environment bedrock will run in (development, staging, production, etc.)
+# The string should correlate to a php file in /config/environments
+# If the file doesn't exists, bedrock fallsback to production settings.
 WP_ENV='development'
 WP_HOME='<%= siteUrl %>'
 WP_SITEURL="${WP_HOME}/wp"
@@ -26,6 +29,12 @@ AUTH_SALT='<%= generateSalt() %>'
 SECURE_AUTH_SALT='<%= generateSalt() %>'
 LOGGED_IN_SALT='<%= generateSalt() %>'
 NONCE_SALT='<%= generateSalt() %>'
+
+# Used for cache busting css and js files
+ASSET_VERSION=0.0.1
+
+# Google Maps API key
+GOOGLE_MAPS_API_KEY=
 <%_ } else if (projectType === 'craft') { -%>
 # The environment Craft is currently running in (dev, staging, production, etc.)
 ENVIRONMENT=dev
@@ -65,7 +74,7 @@ PRIMARY_SITE_URL=<%= siteUrl %>
 # System Email info
 EMAIL_ADDRESS=
 MAILGUN_EMAIL_DOMAIN=
-MAILGUN_EMAIL_APIKEY=
+MAILGUN_EMAIL_API_KEY=
 
 # Google Recaptcha
 RECAPTCHA_SITE_KEY=
@@ -73,6 +82,10 @@ RECAPTCHA_SECRET_KEY=
 
 # Google Maps API key
 GOOGLE_MAPS_API_KEY=
+<%_ }  else { -%>
+# The environment for the project (dev, staging, production, etc.)
+ENVIRONMENT=dev
+SITE_URL=localhost
 <%_ } -%>
-        
+
     

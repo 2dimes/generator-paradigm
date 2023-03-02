@@ -4,6 +4,22 @@
 const $ = require('gulp-load-plugins')({ pattern: ['gulp-*'] });
 
 const pkg = require('./package.json');
+const dotenv = require('dotenv').config();
+<%_ if (projectType === 'bedrock' || projectType === 'craft') { -%>
+const site_hostname = new URL(<%_ if (projectType === 'bedrock') { -%>
+    process.env.WP_HOME
+  <%_ } else if (projectType === 'craft') { -%>
+    process.env.PRIMARY_SITE_URL
+  <%_ } -%>).hostname;
+<%_ } -%>
+
+// Set environment based on .env variable
+<%_ if (projectType === 'bedrock') { -%>
+process.env.NODE_ENV = (process.env.WP_ENV === 'dev' || process.env.WP_ENV === 'development') ? 'development' : 'production';
+<%_ } else { -%>
+process.env.NODE_ENV = (process.env.ENVIRONMENT === 'dev' || process.env.ENVIRONMENT === 'development') ? 'development' : 'production';
+<%_ } -%>
+
 
 const gulp                      = require('gulp'),
       fs                        = require('fs'),
@@ -23,23 +39,23 @@ const gulp                      = require('gulp'),
 
       // Paths to source of assets
       src_folder                = pkg.paths.srcFolder,
-      src_asset_scss            = path.join(src_folder, '/scss/**/*.scss'),
-      src_asset_js              = path.join(src_folder, '/js/**/*.js'),
-      src_asset_img             = path.join(src_folder, '/images/**/*.+(png|jpg|jpeg|gif|svg|ico)'),
-      src_asset_font            = path.join(src_folder, '/fonts/**/*.{eot,svg,ttf,woff,woff2}'),
+      src_asset_scss            = pkg.globs.src.scss,
+      src_asset_js              = pkg.globs.src.js,
+      src_asset_img             = pkg.globs.src.images,
+      src_asset_font            = pkg.globs.src.fonts,
       <%_ if (projectType === 'html') { -%>
-      src_asset_html            = path.join(src_folder, '/**/*.html'),
+      src_asset_html            = pkg.globs.src.html,
       <%_ } -%>
       // Add any other assets that just need to be copied over to dist folder
-      src_generic_assets        = [],
+      src_generic_assets        = pkg.globs.src.genericAssets,
 
       // Paths you want to output assets to
       dist_folder               = pkg.paths.distFolder, // change to whatever root you want it to be.
-      dist_css                  = path.join(dist_folder, '/css'),
-      dist_js                   = path.join(dist_folder, '/js'),
-      dist_img                  = path.join(dist_folder, '/images'),
-      dist_font                 = path.join(dist_folder, '/fonts'),
-      dist_html                 = path.join(dist_folder, '/**/*.{twig,html}'),
+      dist_css                  = pkg.globs.dist.css,
+      dist_js                   = pkg.globs.dist.js,
+      dist_img                  = pkg.globs.dist.images,
+      dist_font                 = pkg.globs.dist.fonts,
+      dist_html                 = <% if (projectType === 'html') { %>pkg.globs.dist.html<% } else { %>pkg.paths.templatesFolder<% } %>,
 
       critical_css              = pkg.paths.criticalCss;
 
@@ -144,13 +160,15 @@ function clean() {
   const files_to_clean = [ dist_folder, temp_folder ];
   <%_ } -%>
 
+  const flat_files_to_clean = files_to_clean.flat();
+
   buildLog({
     type: 'info',
     source: 'gulp clean',
-    message: `Deleting:\n ${colors.info(files_to_clean)}`
+    message: `Deleting:\n ${colors.info(flat_files_to_clean)}`
   });
 
-  return del(files_to_clean);
+  return del(flat_files_to_clean);
 }
 
 exports.clean = clean;
@@ -193,6 +211,32 @@ gulp.task('images', () => {
 });
 
 
+// Generate icon svg sprite
+function icons(done) {
+  gulp.src(pkg.globs.src.icons)
+    .pipe($.svgSprite({
+      shape: {
+        dimension: { // Set maximum dimensions
+          maxWidth: 50,
+          maxHeight: 50
+        },
+        spacing: { // Add padding
+          padding: 0
+        },
+        dest: 'out/intermediate-svg' // Keep the intermediate files
+      },
+      mode: {
+        symbol: true // Activate the «symbol» mode
+      }
+    }))
+    .pipe(gulp.dest(pkg.globs.dist.icons));
+
+  done();
+}
+
+exports.icons = icons;
+
+
 function fonts(done) {
   gulp.src(src_asset_font, {since: gulp.lastRun('fonts')})
     .pipe(gulp.dest(dist_font));
@@ -205,17 +249,24 @@ exports.fonts = fonts;
 <%_ if (projectType === 'html') { -%>
 
 
-gulp.task('html', () => {
-  return gulp.src(src_asset_html, {
+function html(done) {
+  gulp.src(src_asset_html, {
       base: src_folder,
       since: gulp.lastRun('html')
     })
     .pipe(gulp.dest(dist_folder));
-});
+
+  done();
+}
+
+exports.html = html;
 <%_ } -%>
 
 function injectCssJss(done) {
-  const sources = gulp.src([path.join(dist_css, '**/*.css'), path.join(dist_js, '**/*.js')], {read: false});
+  const cssFolder = dist_css.map(item => path.join(item, '**/*.css'));
+  const jsFolder = dist_js.map(item => path.join(item, '**/*.js'));
+
+  const sources = gulp.src([cssFolder, jsFolder].flat(), {read: false});
 
   gulp.src(dist_html)
     .pipe($.inject(sources, {
@@ -294,22 +345,38 @@ gulp.task('css', gulp.series(<%_ if (includeTailwind) { -%>exportTailwindConfig,
 
 
 // Lint JavaScript
-function lintJs() {
-  return gulp.src(src_asset_js, { since: gulp.lastRun(lintJs) })
+function lintJs(done) {
+  const f = $.filter(['**', '!**/vendor/**/*.js']);
+
+  gulp.src(src_asset_js, { since: gulp.lastRun(lintJs) })
+    .pipe(f)
     .pipe($.eslint())
     .pipe($.eslint.format())
-    .pipe($.if(!browserSync.active, $.eslint.failAfterError()))
+    .pipe($.if(!browserSync.active, $.eslint.failAfterError()));
+
+  done();
 }
 
 
 function webpackJs() {
   return gulp.src(src_asset_js, { since: gulp.lastRun(webpackJs) })
     .pipe($.plumber())
-    .pipe(webpackStream(require('./webpack.config.js'), webpack ))
+    .pipe(webpackStream(isProd ? require('./webpack.prod.js') : require('./webpack.dev.js'), webpack ))
     .pipe(gulp.dest(dist_js));
 }
 
-gulp.task('js', gulp.series(lintJs, webpackJs));
+function vendorJs(done) {
+  const f = $.filter(['**/vendor/**/*.js']);
+
+  gulp.src(src_asset_js, { since: gulp.lastRun(vendorJs) })
+    .pipe($.plumber())
+    .pipe(f)
+    .pipe(gulp.dest(dist_js));
+
+  done();
+}
+
+gulp.task('js', gulp.series(lintJs, gulp.parallel(webpackJs, vendorJs)));
 
 
 // service worker compile and copy
@@ -386,7 +453,11 @@ gulp.task('generate-favicon', function(done) {
       scalingAlgorithm: 'Mitchell',
       errorOnImageTooSmall: false,
       readmeFile: false,
+      <%_ if (projectType === 'craft') { -%>
+      htmlCodeFile: false,
+      <%_ } else { -%>
       htmlCodeFile: true,
+      <%_ } -%>
       usePathAsIs: false
     },
     markupFile: FAVICON_DATA_FILE
@@ -401,9 +472,9 @@ gulp.task('generate-favicon', function(done) {
 // this task whenever you modify a page. You can keep this task
 // as is or refactor your existing HTML pipeline.
 gulp.task('inject-favicon-markups', function() {
-  return gulp.src(dist_html)
+  return gulp.src(<%_ if (projectType === 'craft') { -%>['./templates/_layout/_main.{twig.html}'], { base: './templates' }<%_ } else { -%>dist_html<%_ } -%>)
     .pipe($.realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(FAVICON_DATA_FILE)).favicon.html_code))
-    .pipe(gulp.dest(dist_folder));
+    .pipe(gulp.dest(<%_ if (projectType === 'craft') { -%>'./templates'<%_ } else { -%>dist_folder<%_ } -%>));
 });
 
 
@@ -431,7 +502,7 @@ gulp.task('browser-sync', (done) => {
     },
     open: true,
     <%_ } else if (projectType === 'craft' || projectType === 'bedrock')  { -%>
-    proxy: '<%= siteUrl %>',
+    proxy: site_hostname,
     open: false,
     <%_ } -%>
     port: 3000,
@@ -476,18 +547,19 @@ gulp.task('watch', (done) => {
   });
 
   <%_ if (projectType === 'html') { -%>
-  gulp.watch(src_asset_html, gulp.series('html', 'css', injectCssJss)).on('done', browserSync.reload);
+  gulp.watch(src_asset_html, gulp.series(html, 'css', injectCssJss)).on('done', browserSync.reload);
   <%_ } -%>
   <%_ if (includeTailwind) { -%>
   gulp.watch('tailwind.config.js', gulp.series('css'));
   <%_ } -%>
   gulp.watch(src_asset_scss, gulp.series('css'));
-  gulp.watch(src_asset_js, gulp.series('js', reloadAndDone));
+  gulp.watch(src_asset_js, gulp.series(gulp.parallel('css', 'js'), reloadAndDone));
   gulp.watch(src_asset_img, gulp.series('images', reloadAndDone));
+  gulp.watch(pkg.globs.src.icons, gulp.series(icons, reloadAndDone));
   gulp.watch(src_asset_font, gulp.series('fonts', reloadAndDone));
 
   <%_ if (projectType === 'craft' || projectType === 'bedrock') { -%>
-  gulp.watch(pkg.paths.templatesFolder).on('change', browserSync.reload);
+  gulp.watch(pkg.paths.templatesFolder, gulp.series('css', reloadAndDone));
   <%_ } -%>
 
   done();
@@ -499,17 +571,17 @@ gulp.task('build',
     gulp.parallel(
       genericAssets,
       <%_ if (projectType === 'html') { -%>
-      'html',
+      html,
       <%_ } -%>
       'service-worker', 
       'images', 
+      icons,
       fonts, 
       'css', 
-      'js', 
-      'generate-favicon'
-    )<% if (projectType === 'html') { %>, 
-    injectCssJss,
-    'inject-favicon-markups'
+      'js'
+    ), 
+    <%_ if (projectType === 'html') { -%>
+    injectCssJss
     <%_ } -%>
   )
 );
@@ -520,9 +592,10 @@ gulp.task('serve',
     gulp.parallel(
       genericAssets, 
       <%_ if (projectType === 'html') { -%>
-      'html',
+      html,
       <%_ } -%>
-      'images', 
+      'images',
+      icons, 
       fonts, 
       'css', 
       'js'
@@ -558,8 +631,7 @@ gulp.task('critical', gulp.series('build', function (done) {
     // critical.generate returns a Promise.
     return critical.generate({
       base: dist_folder,
-      src: page.url,
-      css: isProd ? path.join(dist_css, 'styles.min.css') : path.join(dist_css, 'styles.css'),
+      src: process.env.PRIMARY_SITE_URL + page.url,
       styleTarget: path.join(critical_css, page.key + '.css'),
       minify: true,
       dimension: [{

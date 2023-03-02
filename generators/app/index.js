@@ -57,7 +57,11 @@ module.exports = class extends Generator {
 
     // Have Yeoman greet the user.
     this.log(
-      yosay(`${chalk.green('Paradigm Marketing & Creative')} project starter!`)
+      yosay(
+        `'allo!\n Welcome to the ${chalk.green(
+          'Paradigm Marketing & Creative'
+        )} project starter!`
+      )
     );
 
     // Capitalizes the Site Name
@@ -127,7 +131,7 @@ module.exports = class extends Generator {
         name: 'siteUrl',
         message: 'What is the url for the site?',
         default() {
-          return `https://${path.basename(process.cwd())}.test`;
+          return `http://${path.basename(process.cwd())}.test`;
         },
         validate(input) {
           if (validURL(input)) {
@@ -170,6 +174,30 @@ module.exports = class extends Generator {
         when: (answers) => answers.projectType.includes('bedrock'),
       },
       {
+        type: 'input',
+        name: 'adminUsername',
+        message: 'Enter a username for the admin:',
+        default: 'admin',
+        when: (answers) => answers.projectType.includes('bedrock'),
+      },
+      {
+        type: 'input',
+        name: 'adminEmail',
+        message: 'Enter the email for the admin:',
+        default: 'info@2dimes.com',
+        when: (answers) => answers.projectType.includes('bedrock'),
+      },
+      {
+        type: 'input',
+        name: 'adminPassword',
+        message: 'Enter a password for the admin:',
+        default: () =>
+          Array(...Array(12))
+            .map(getRandomChar)
+            .join(''),
+        when: (answers) => answers.projectType.includes('bedrock'),
+      },
+      {
         type: 'checkbox',
         name: 'features',
         message: 'Which additional features would you like to include?',
@@ -200,6 +228,11 @@ module.exports = class extends Generator {
               'v2.2 (https://flickity.metafizzy.co)'
             )}`,
             value: 'includeFlickity',
+            checked: false,
+          },
+          {
+            name: `Swiper - ${chalk.magenta('v7 (https://swiperjs.com/)')}`,
+            value: 'includeSwiper',
             checked: false,
           },
           {
@@ -242,20 +275,31 @@ module.exports = class extends Generator {
       this.dbUser = answers.dbUser;
       this.dbPassword = answers.dbPassword;
 
+      // Bedrock options
+      this.adminUsername = answers.adminUsername;
+      this.adminEmail = answers.adminEmail;
+      this.adminPassword = answers.adminPassword;
+
       const { features } = answers;
       const hasFeature = (feat) => features && features.includes(feat);
 
       // Manually deal with the response, get back and store the results.
       // we change a bit this way of doing to automatically do this in the self.prompt() method.
+      this.features = features;
       this.includeBootstrap = hasFeature('includeBootstrap');
       this.includeTailwind = hasFeature('includeTailwind');
       this.includeAlpine = hasFeature('includeAlpine');
       this.includeLazyload = hasFeature('includeLazyload');
       this.includeFlickity = hasFeature('includeFlickity');
+      this.includeSwiper = hasFeature('includeSwiper');
       this.includeFancybox = hasFeature('includeFancybox');
       this.includeGSAP = hasFeature('includeGSAP');
-      this.includeJQuery = answers.includeJQuery;
+      this.includeJQuery = hasFeature('includeBootstrap')
+        ? true
+        : answers.includeJQuery;
       this.projectName = answers.projectName;
+
+      this.log(`${chalk.green(this.features)}`);
     });
   }
 
@@ -280,12 +324,14 @@ module.exports = class extends Generator {
       dbName: this.dbName,
       dbUser: this.dbUser,
       dbPassword: this.dbPassword,
+      features: this.features,
       includeBootstrap: this.includeBootstrap,
       includeJQuery: this.includeJQuery,
       includeTailwind: this.includeTailwind,
       includeAlpine: this.includeAlpine,
       includeLazyload: this.includeLazyload,
       includeFlickity: this.includeFlickity,
+      includeSwiper: this.includeSwiper,
       includeFancybox: this.includeFancybox,
       includeGSAP: this.includeGSAP,
 
@@ -310,37 +356,48 @@ module.exports = class extends Generator {
       );
     };
 
+    // ===================================================
+    // Create files based on answers
+    // ===================================================
     // Render Files
     config.filesToRender.forEach((file) => {
       copyTpl(file.input, file.output, templateData);
     });
+
+    // Render files specific to projectType
+    if (typeof config[this.projectType].filesToRender === 'function') {
+      config[this.projectType].filesToRender(this).forEach((file) => {
+        copyTpl(file.input, file.output, templateData);
+      });
+    }
 
     // Copy Files
     config.filesToCopy.forEach((file) => {
       copy(file.input, file.output);
     });
 
+    // Copy files specific to projectType
+    if (config[this.projectType].filesToCopy !== 'undefined') {
+      config[this.projectType].filesToCopy.forEach((file) => {
+        copy(file.input, file.output);
+      });
+    }
+
     // Create extra directories
     config.dirsToCreate.forEach((item) => {
       mkdirp(item);
     });
 
-    if (this.projectType === 'bedrock' || this.projectType === 'craft') {
+    // Create extra directories specific to projectType
+    if (config[this.projectType].dirsToCreate === 'function') {
       config[this.projectType].dirsToCreate(this).forEach((item) => {
         mkdirp(item);
       });
-
-      config[this.projectType].filesToCopy.forEach((file) => {
-        copy(file.input, file.output);
-      });
-
-      config[this.projectType].filesToRender(this).forEach((file) => {
-        copyTpl(file.input, file.output, templateData);
-      });
-    } else if (this.projectType === 'html') {
-      copyTpl('_index.html.ejs', 'src/index.html', templateData);
     }
 
+    // ===================================================
+    // Add npm packages based on project answers
+    // ===================================================
     if (this.includeBootstrap) {
       pkgJson.dependencies = {
         bootstrap: '^4.4.0',
@@ -354,7 +411,7 @@ module.exports = class extends Generator {
     }
 
     if (this.includeAlpine) {
-      pkgJson.dependencies.alpinejs = '^2.7.1';
+      pkgJson.dependencies.alpinejs = '^3.10.0';
     }
 
     if (this.includeLazyload) {
@@ -365,8 +422,17 @@ module.exports = class extends Generator {
       pkgJson.dependencies.flickity = '^2.2.0';
     }
 
+    if (this.includeSwiper) {
+      pkgJson.dependencies.swiper = '^8.3.2';
+
+      // Copy over sass files
+      config.swiper.filesToCopy.forEach((file) => {
+        copy(file.input, file.output);
+      });
+    }
+
     if (this.includeFancybox) {
-      pkgJson.dependencies['@fancyapps/ui'] = '^4.0.0-beta.0';
+      pkgJson.dependencies['@fancyapps/ui'] = '^4.0.17';
 
       // Copy over sass files
       config.fancybox4.filesToCopy.forEach((file) => {
@@ -375,12 +441,12 @@ module.exports = class extends Generator {
     }
 
     if (this.includeGSAP) {
-      pkgJson.dependencies.gsap = '^3.7.1';
+      pkgJson.dependencies.gsap = 'npm:@gsap/shockingly@^3.11.4';
     }
 
     if (this.includeTailwind) {
       pkgJson.devDependencies['gulp-tailwindcss-export-config'] = '^1.0.1';
-      pkgJson.devDependencies.tailwindcss = '^2.2.6';
+      pkgJson.devDependencies.tailwindcss = '^3.1.6';
 
       copy('tailwind.config.js', 'tailwind.config.js');
     }
@@ -410,7 +476,7 @@ module.exports = class extends Generator {
         yosay('allo!\nJust gonna build the frontend files for the first time.')
       );
 
-      this.spawnCommandSync('npm', ['run', 'build:dev']);
+      this.spawnCommandSync('npm', ['run', 'build']);
     }
 
     if (this.projectType === 'html') {
@@ -419,20 +485,41 @@ module.exports = class extends Generator {
           `Thanks for using the Paradigm Starter Kit!\nTry running 'npm run serve' to check out your new fancy project!\nCheers 🍻!`
         )
       );
-    } else {
-      this.log(yosay(`Thanks for using the Paradigm Starter Kit!\nCheers 🍻!`));
+
+      return;
     }
 
     if (this.projectType === 'craft') {
-      // Generate security key and app id in .env file
-      // this.spawnCommandSync('php', ['craft', 'setup/security-key']);
-      // this.spawnCommandSync('php', ['craft', 'setup/app-id']);
-
       this.log(
-        yosay("g'day!\nGonna run you through `php craft install` process now.")
+        yosay("g'day!\nGonna run you through `php craft setup` process now.")
       );
 
       this.spawnCommandSync('php', ['craft', 'setup']);
     }
+
+    if (this.projectType === 'bedrock') {
+      this.log(yosay("g'day!\nI'm now going to run 'wp core install' now."));
+
+      this.spawnCommandSync('wp', [
+        'core',
+        'install',
+        `--url=${this.siteUrl}`,
+        `--title=${this.projectName}`,
+        `--admin_user=${this.adminUsername}`,
+        `--admin_email=${this.adminEmail}`,
+        `--admin_password=${this.adminPassword}`,
+      ]);
+
+      this.log(`
+        -----------------------------------------------
+        ${chalk.bold.green('Wordpress has been installed! 🥳')}
+
+        You can log in as
+        ${chalk.bold.green('Username:')} ${this.adminUsername}
+        ${chalk.bold.green('Password:')} ${this.adminPassword}
+        -----------------------------------------------`);
+    }
+
+    this.log(yosay(`Thanks for using the Paradigm Starter Kit!\nCheers 🍻!`));
   }
 };

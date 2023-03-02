@@ -3,6 +3,8 @@ const colors = require('tailwindcss/colors');
 const plugin = require('tailwindcss/plugin');
 
 module.exports = {
+    content: pkg.paths.purgeFiles,
+    safelist: [],
     theme: {
         extend: {
             inset: {
@@ -130,14 +132,6 @@ module.exports = {
             '-full': '-100%'
         },
     },
-    variants: {
-        translate: ['responsive', 'hover', 'group-hover'],
-    },
     plugins: [
-    ],
-    purge: {
-        enabled: (process.env.NODE_ENV === 'production'),
-        content: pkg.paths.purgeFiles,
-        safelist: []
-    }
+    ]
 }
