@@ -580,7 +580,9 @@ gulp.task('build',
       'css', 
       'js'
     ), 
+    <%_ if (projectType === 'html') { -%>
     injectCssJss
+    <%_ } -%>
   )
 );
 

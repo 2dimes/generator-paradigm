@@ -44,6 +44,14 @@ module.exports = {
       output: 'webpack.common.js',
     },
     {
+      input: '_webpack.dev.js',
+      output: 'webpack.dev.js',
+    },
+    {
+      input: '_webpack.prod.js',
+      output: 'webpack.prod.js',
+    },
+    {
       input: '_package.json.ejs',
       output: 'package.json',
     },
