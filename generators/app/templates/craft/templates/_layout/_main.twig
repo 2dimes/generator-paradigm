@@ -1,43 +1,60 @@
+{% set assetVersion = '0.0.1' %}
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" class="{% if htmlClass is defined %}{{ htmlClass }}{% endif %}">
 
     <head>
+
+        <!--
+            =============================================================== 
+                              Website Custom made by:
+            ██████╗  █████╗ ██████╗  █████╗ ██████╗ ██╗ ██████╗ ███╗   ███╗
+            ██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔══██╗██║██╔════╝ ████╗ ████║
+            ██████╔╝███████║██████╔╝███████║██║  ██║██║██║  ███╗██╔████╔██║
+            ██╔═══╝ ██╔══██║██╔══██╗██╔══██║██║  ██║██║██║   ██║██║╚██╔╝██║
+            ██║     ██║  ██║██║  ██║██║  ██║██████╔╝██║╚██████╔╝██║ ╚═╝ ██║
+            ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝
+                               Marketing & Creative
+            ===============================================================
+            A Branding Agency based in Memphis, TN
+            https://2dimes.com
+        -->
 
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="home" href="{{ siteUrl }}" />
 
-        {# Favicon #}
-        <link rel="apple-touch-icon" sizes="180x180" href="{{ siteUrl }}assets/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="{{ siteUrl }}assets/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="{{ siteUrl }}assets/favicon-16x16.png">
-        <link rel="manifest" href="{{ siteUrl }}assets/site.webmanifest">
-        <meta name="msapplication-TileColor" content="#ffffff">
-        <meta name="msapplication-TileImage" content="{{ siteUrl }}assets/mstile-144x144.png">
-        <meta name="theme-color" content="#EE364B">
+        {# Favicon Meta goes here #}
 
-        {# DNS prefetching #}
+        {# DNS prefetching here #}
 
         {# Font embeds here #}
 
         {# CSS #}
-        {% if craft.app.config.general.devMode %}
+        {% set mainCssKey = 'mainCss' %}
+
+        {% if craft.app.config.env == 'dev' %}
             {% set mainCssPath = "/assets/css/styles.css" %}
         {% else %}
-            {% set mainCssPath = "/assets/css/styles.min.css" %}
+            {% set mainCssPath = "/assets/css/styles.min.css?v=#{ assetVersion }" %}
         {% endif %}
 
         {% if includeCriticalCss is defined and includeCriticalCss == true %}
 
             {% block criticalCss %}{% endblock %}
 
-            <link rel="preload" href="{{ mainCssPath }}" as="style" onload="this.rel='stylesheet'">
+            {% do view.registerCssFile(mainCssPath, {
+                rel: 'preload',
+                as: 'style',
+                onload: 'this.rel=\'stylesheet\''
+            }, mainCssKey) %}
+
             <noscript><link rel="stylesheet" href="{{ mainCssPath }}"></noscript>
 
         {% else %}
 
-            <link rel="stylesheet" type="text/css" href="{{ mainCssPath }}">
+            {% do view.registerCssFile(mainCssPath, {}, mainCssKey) %}
 
         {% endif %}
 
@@ -58,7 +75,7 @@
         <a class="sr-only focus:not-sr-only" href="#main-content">{{ "Skip to main content"|t }}</a>
 
         <!-- icons -->
-        <div style="display:none;">{% include "_includes/_icons.svg" ignore missing %}</div>
+        <div style="display:none;">{{ svg("@webroot/assets/images/icons/symbol/svg/sprite.symbol.svg", sanitize=false, namespace=false) }}</div>
 
         {% include "_includes/_main-navigation" %}
 
@@ -72,10 +89,11 @@
         {% include "_includes/_footer" %}
 
         {% block footerJsFiles %}
-            {% if craft.app.config.general.devMode %}
-                <script type="text/javascript" src="{{ siteUrl }}assets/js/main.js"></script>
+            {% if craft.app.config.env == 'dev' %}
+                {% js "/assets/js/main.js" %}
             {% else %}
-                <script type="text/javascript" src="{{ siteUrl }}assets/js/main.min.js"></script>
+                {% do view.registerJsFile("/assets/js/defaultVendors-main.min.js?v=" ~ assetVersion ) %}
+                {% do view.registerJsFile("/assets/js/main.min.js?v" ~ assetVersion) %}
             {% endif %}
         {% endblock %}
 

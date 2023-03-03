@@ -27,7 +27,7 @@
     }<%_ if (includeTailwind) { -%>,
     "purgeFiles": [
       <%_ if (projectType === 'html') { -%>
-      "./src/**/*.{html}",
+      "./src/**/*.html",
       <%_ } else if (projectType === 'bedrock') { -%>
       "./web/app/themes/<%= wordpressTemplateName %>/templates/**/*.{twig,html}",
       <%_ } else if (projectType === 'craft') { -%>
@@ -36,6 +36,41 @@
       "./src/js/**/*.js"
     ]
     <%_ } -%>
+  },
+  "globs": {
+    "src": {
+      <%_ if (projectType === 'html') { -%>
+      "html": ["./src/**/*.html"],
+      <%_ } -%>
+      "scss": ["./src/scss/**/*.scss"],
+      "js": ["./src/js/**/*.js"],
+      "images": ["./src/images/**/*.+(png|jpg|jpeg|gif|svg|ico)", "!./src/images/icons/**/*"],
+      "icons": ["./src/images/icons/**/*.svg"],
+      "fonts": ["./src/fonts/**/*"],
+      "genericAssets": []
+    },
+    "dist": {
+      <%_ if (projectType === 'bedrock') { -%>
+      "css": ["./web/app/themes/<%= wordpressTemplateName %>/static/css"],
+      "js": ["./web/app/themes/<%= wordpressTemplateName %>/static/js"],
+      "images": ["./web/app/themes/<%= wordpressTemplateName %>/static/images"],
+      "icons": ["./web/app/themes/<%= wordpressTemplateName %>/static/images/icons"],
+      "fonts": ["./web/app/themes/<%= wordpressTemplateName %>/static/fonts"]
+      <%_ } else if (projectType === 'craft') { -%>
+      "css": ["./web/assets/css"],
+      "js": ["./web/assets/js"],
+      "images": ["./web/assets/images"],
+      "icons": ["./web/assets/images/icons"],
+      "fonts": ["./web/assets/fonts"]
+      <%_ } else { -%>
+      "html": ["./dist/**/*.{twig,html}"],
+      "css": ["./dist/css"],
+      "js": ["./dist/js"],
+      "images": ["./dist/images"],
+      "icons": ["./dist/images/icons"],
+      "fonts": ["./dist/fonts"]
+      <%_ } -%>
+    }
   },
   "favicon": {
     "image": "./src/favicon260x260.png",
@@ -56,6 +91,7 @@
     "cross-env": "^7.0.2",
     "cssnano": "^4.1.10",
     "del": "^5.1.0",
+    "dotenv": "^16.0.1",
     "es6-promise-pool": "^2.5.0",
     "eslint": "^7.26.0",
     "expose-loader": "^3.1.0",
@@ -76,24 +112,23 @@
     "gulp-replace": "^1.0.0",
     "gulp-size": "^3.0.0",
     "gulp-sourcemaps": "^2.6.5",
+    "gulp-svg-sprite": "^1.5.0",
     "gulp-uglify": "^3.0.2",
     "postcss": "^8.1.10",
     "postcss-clean": "^1.1.0",
     "through2": "^3.0.1",
     "webpack": "^5.67.0",
+    "webpack-merge": "^5.8.0",
     "webpack-stream": "^7.0.0"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production gulp",
-    "build:dev": "cross-env NODE_ENV=development gulp",
-    "critical-css": "cross-env NODE_ENV=development gulp critical",
-    "critical-css:dist": "cross-env NODE_ENV=production gulp critical",
+    "build": "gulp",
+    "critical-css": "gulp critical",
     "frontend": "gulp sass js",
-    "frontend:dist": "cross-env NODE_ENV=production gulp sass js",
-    "serve": "cross-env NODE_ENV=development npm run gulp-serve", 
-    "serve:dist": "cross-env NODE_ENV=production npm run gulp-serve",
+    "serve": "npm run gulp-serve", 
     "gulp-serve": "gulp serve",
-    "tasks": "gulp --tasks"
+    "tasks": "gulp --tasks",
+    "gulp": "gulp"
   },
   "browserslist": [
     "> 1%",

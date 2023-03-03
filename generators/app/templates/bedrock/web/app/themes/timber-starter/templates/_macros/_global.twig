@@ -1,0 +1,31 @@
+{#
+    Renders Alt Text for images
+    Alt Text field then Caption field then defaults to Title
+#}
+{% macro altText(fieldName) %}
+    alt="{{ fieldName.alt|default(fieldName.caption|default(fieldName.title)) }}"
+{% endmacro %}
+
+{#
+    Adds tailwind classes using PHP preg_replace to basic rich text elements so they can be styled.
+#}
+{% macro richTextRegex(fieldName) %}
+
+    {{ fieldName    | preg_replace('/\<p\>/', '<p class="mb-1 leading-loose">')
+                    | preg_replace('/\<h2\>/', '<h2 class="font-heading text-2 lg:text-2p4 text-primary-300 uppercase font-bold tracking-widest leading-tight mb-1">')
+                    | preg_replace('/\<h3\>/', '<h3 class="font-heading text-1p4 text-primary-300 uppercase font-bold tracking-widest leading-tight">') 
+                    | preg_replace('/\<a/', '<a class="border-b border-secondary-200 transition ease-in-out duration-200 hover:text-secondary-200"')
+                    | preg_replace('/\<em\>/', '<em class="italic">')
+                    | preg_replace('/\<strong\>/', '<strong class="font-bold">')
+                    | preg_replace('/\<ul\>/', '<ul class="list-disc pl-2 my-2">')
+                    | preg_replace('/\<li\>/', '<li class="mb-1">') }}
+
+{% endmacro %}
+
+
+{# 
+    SVG data placeholder
+#}
+{% macro svgPlaceholder(width = 16, height = 16) %}
+    src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' viewBox%3D'0 0 {{ width }} {{ height }}' style%3D'background:%23e3e3e2' %2F%3E"
+{% endmacro %}
